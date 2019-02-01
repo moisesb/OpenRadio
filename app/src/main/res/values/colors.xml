@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!--MainActivity-->
+    <color name="toolbar_title_color">@android:color/white</color>
+    <color name="bottom_navigation_icon_tint">@android:color/white</color>
+    <color name="bottom_navigation_text_color">@android:color/white</color>
 </resources>

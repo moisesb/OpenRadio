@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Open Radio</string>
+    <string name="top_radios_menu_title">Top</string>
+    <string name="favorites_radios_menu_title">Favorites</string>
 </resources>
