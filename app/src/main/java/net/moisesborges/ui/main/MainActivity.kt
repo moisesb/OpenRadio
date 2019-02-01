@@ -26,7 +26,7 @@ class MainActivity : LifecycleActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.radioSelection.observe(this, Observer {
-            val fragment =  when(it) {
+            val fragment = when (it) {
                 RadioSelection.TOP -> TopRadioFragment()
                 RadioSelection.FAVOURITES -> FavoritesRadioFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
@@ -41,7 +41,7 @@ class MainActivity : LifecycleActivity() {
     }
 
     private fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when(menuItem.itemId) {
+        when (menuItem.itemId) {
             R.id.top_radios_menu_item -> viewModel.topSelected()
             R.id.favorites_radios_menu_item -> viewModel.favoritesSelected()
             else -> return false
