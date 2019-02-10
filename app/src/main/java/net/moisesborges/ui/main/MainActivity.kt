@@ -10,7 +10,7 @@ import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.favorites.FavoritesRadioFragment
 import net.moisesborges.ui.main.mvvm.RadioSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
-import net.moisesborges.ui.top.TopRadioFragment
+import net.moisesborges.ui.top.TopStationsFragment
 import org.koin.android.ext.android.inject
 import java.lang.IllegalStateException
 
@@ -27,7 +27,7 @@ class MainActivity : LifecycleActivity() {
 
         viewModel.radioSelection.observe(this, Observer {
             val fragment = when (it) {
-                RadioSelection.TOP -> TopRadioFragment()
+                RadioSelection.TOP -> TopStationsFragment()
                 RadioSelection.FAVOURITES -> FavoritesRadioFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }
