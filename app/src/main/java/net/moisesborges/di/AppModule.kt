@@ -1,12 +1,10 @@
 package net.moisesborges.di
 
+import android.content.Context
 import org.koin.dsl.module.module
 
-val appModule = module {
-    factory { HelloWorldProvider() }
-}
-
-// This class should be removed
-class HelloWorldProvider {
-    fun helloWorld() = "Hello World from Koin"
+val appModule = { context: Context ->
+    module {
+        factory { context.resources }
+    }
 }
