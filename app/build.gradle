@@ -20,6 +20,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -32,7 +39,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     // KotlinX
-    implementation 'androidx.core:core-ktx:1.1.0-alpha03'
+    implementation 'androidx.core:core-ktx:1.1.0-alpha04'
 
     //  Support Library
     implementation "androidx.core:core:1.0.1"
@@ -49,6 +56,20 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+
+    // Gson
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Testing
     testImplementation 'junit:junit:4.12'
