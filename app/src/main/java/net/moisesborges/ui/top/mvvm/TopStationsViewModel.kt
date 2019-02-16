@@ -4,32 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import net.moisesborges.api.DirbleApi
 import net.moisesborges.extensions.get
+import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.Station
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class TopStationsViewModel(
     private val dirbleApi: DirbleApi
 ) {
 
+    private val disposables = CompositeDisposable()
     private val state: MutableLiveData<TopStationsState> = MutableLiveData<TopStationsState>().also {
         it.value = initialTopStationsState()
     }
 
     val stations: LiveData<List<Station>> = Transformations.map(state) { it.stations }
-
     val isLoading: LiveData<Boolean> = Transformations.map(state) { it.loading }
 
     fun loadTopRadios() {
         state.value = state.get().copy(loading = true)
-        val disposable = dirbleApi.getPopularStations()
-            .delay(3, TimeUnit.SECONDS)
+        disposables += dirbleApi.getPopularStations()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::onStationsLoaded, this::onErrorHappened)
+    }
+
+    fun clear() {
+        disposables.clear()
     }
 
     private fun onErrorHappened(error: Throwable) {
