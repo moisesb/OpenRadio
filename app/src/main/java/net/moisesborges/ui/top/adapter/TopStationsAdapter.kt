@@ -41,7 +41,7 @@ class StationViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(station: Station) {
-        binding.station = station
+        binding.viewModel = TopStationItemViewModel(station)
         binding.executePendingBindings()
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_station_item_height">96dp</dimen>
+    <dimen name="top_station_item_image_size">80dp</dimen>
+    <dimen name="top_station_item_image_margin">8dp</dimen>
+    <dimen name="top_station_item_name_text_size">18dp</dimen>
+    <dimen name="top_station_item_country_text_size">14dp</dimen>
+</resources>

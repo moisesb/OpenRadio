@@ -46,4 +46,10 @@ class TopStationsFragment : Fragment(), LifecycleOwner {
 
         viewModel.loadTopRadios()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        viewModel.clear()
+    }
 }
