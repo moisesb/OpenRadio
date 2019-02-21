@@ -23,7 +23,7 @@ class DirbleStationJsonDeserializer : JsonDeserializer<Station> {
             deserializeImage(imageJson),
             deserializeImage(imageJson.getAsJsonObject("thumbnail")),
             deserializeGenres(stationJson.getAsJsonArray("categories")),
-            deserializeStream(stationJson.getAsJsonObject("stream"))
+            deserializeStream(stationJson.getAsJsonArray("streams")[0].asJsonObject)
         )
     }
 
@@ -47,10 +47,13 @@ class DirbleStationJsonDeserializer : JsonDeserializer<Station> {
     }
 
     private fun deserializeStream(streamJson: JsonObject?): Stream? {
-        return if (streamJson != null) Stream(
-            streamJson.get("stream").asString,
-            streamJson.get("bitrate").asInt,
-            streamJson.get("content_type").asString
-        ) else null
+        return if (streamJson != null && !streamJson.isJsonNull) {
+            val bitrateJson = streamJson.get("bitrate")
+            Stream(
+                streamJson.get("stream").asString,
+                if (bitrateJson.isJsonNull) 0 else bitrateJson.asInt,
+                streamJson.get("content_type").asString
+            )
+        } else null
     }
 }

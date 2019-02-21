@@ -8,7 +8,9 @@ import net.moisesborges.R
 import net.moisesborges.databinding.TopStationItemBinding
 import net.moisesborges.model.Station
 
-class TopStationsAdapter : RecyclerView.Adapter<StationViewHolder>() {
+class TopStationsAdapter(
+    private val topStationItemViewModelFactory: TopStationItemViewModelFactory
+) : RecyclerView.Adapter<StationViewHolder>() {
 
     private val stations = mutableListOf<Station>()
 
@@ -32,7 +34,8 @@ class TopStationsAdapter : RecyclerView.Adapter<StationViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
-        holder.bind(stations[position])
+        val station = stations[position]
+        holder.bind(topStationItemViewModelFactory.create(station))
     }
 }
 
@@ -40,8 +43,8 @@ class StationViewHolder(
     private val binding: TopStationItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(station: Station) {
-        binding.viewModel = TopStationItemViewModel(station)
+    fun bind(viewModel: TopStationItemViewModel) {
+        binding.viewModel = viewModel
         binding.executePendingBindings()
     }
 }

@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.ui.top.mvvm.TopStationsViewModel
 import net.moisesborges.databinding.FragmentTopStationsBinding
+import net.moisesborges.ui.top.adapter.TopStationItemViewModelFactory
 import net.moisesborges.ui.top.adapter.TopStationsAdapter
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 class TopStationsFragment : Fragment(), LifecycleOwner {
@@ -21,7 +23,9 @@ class TopStationsFragment : Fragment(), LifecycleOwner {
     private lateinit var binding: FragmentTopStationsBinding
 
     private val viewModel: TopStationsViewModel by inject()
-    private val adapter = TopStationsAdapter()
+    private val topStationItemViewModelFactory: TopStationItemViewModelFactory = get()
+
+    private val adapter = TopStationsAdapter(topStationItemViewModelFactory)
     private val stationsRecyclerView: RecyclerView by lazy { view!!.findViewById<RecyclerView>(R.id.stations_recycler_view) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

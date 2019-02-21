@@ -1,3 +1,7 @@
 package net.moisesborges.model
 
-data class Image(val url: String?)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Image(val url: String?) : Parcelable
