@@ -1,10 +1,12 @@
 package net.moisesborges.ui.top.adapter
 
 import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
 import timber.log.Timber
 
 class TopStationItemViewModel(
-    private val station: Station
+    private val station: Station,
+    private val navigator: Navigator
 ) {
 
     val title = station.name
@@ -12,7 +14,7 @@ class TopStationItemViewModel(
     val image = station.image
 
     fun itemSelected() {
-        Timber.d("item $station selected")
+        navigator.navigateToAudioPlayer(station)
     }
 
     fun favoriteSelected() {
