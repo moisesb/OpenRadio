@@ -27,6 +27,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -49,6 +55,9 @@ dependencies {
 
     // Material Design
     implementation 'com.google.android.material:material:1.0.0'
+
+    // Exoplayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
