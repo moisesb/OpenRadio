@@ -1,4 +1,4 @@
-package net.moisesborges.ui.audio.player
+package net.moisesborges.audioplayer
 
 import android.content.Context
 import androidx.core.net.toUri
