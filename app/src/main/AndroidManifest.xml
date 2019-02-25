@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.audio.AudioPlayerActivity"
+        <activity android:name=".ui.station.StationActivity"
                   android:launchMode="singleTop">
 
         </activity>

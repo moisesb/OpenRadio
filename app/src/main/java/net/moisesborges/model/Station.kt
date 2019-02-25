@@ -13,3 +13,13 @@ data class Station(
     val genres: List<Genre>,
     val stream: Stream?
 ) : Parcelable
+
+fun emptyStation() = Station(
+    0,
+    "",
+    "",
+    Image(""),
+    Image(""),
+    emptyList(),
+    Stream("", 0, "")
+)

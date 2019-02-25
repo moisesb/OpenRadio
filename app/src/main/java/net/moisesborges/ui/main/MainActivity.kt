@@ -2,30 +2,31 @@ package net.moisesborges.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import net.moisesborges.R
+import net.moisesborges.databinding.ActivityMainBinding
+import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.favorites.FavoritesRadioFragment
 import net.moisesborges.ui.main.mvvm.RadioSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
 import net.moisesborges.ui.top.TopStationsFragment
-import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.get
 import java.lang.IllegalStateException
 
 class MainActivity : LifecycleActivity() {
 
-    private val viewModel: MainViewModel by inject()
+    private val mainViewModel: MainViewModel = get()
+    private val audioPlayerViewModel: AudioPlayerViewModel = get()
 
-    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
-    private val bottomNavigation: BottomNavigationView by lazy { findViewById<BottomNavigationView>(R.id.bottom_navigation) }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        viewModel.radioSelection.observe(this, Observer {
+        mainViewModel.radioSelection.observe(this, Observer {
             val fragment = when (it) {
                 RadioSelection.TOP -> TopStationsFragment()
                 RadioSelection.FAVOURITES -> FavoritesRadioFragment()
@@ -36,14 +37,14 @@ class MainActivity : LifecycleActivity() {
                 .commit()
         })
 
-        toolbar.setOnMenuItemClickListener(this::onMenuItemSelected)
-        bottomNavigation.setOnNavigationItemSelectedListener(this::onMenuItemSelected)
+        binding.toolbar.setOnMenuItemClickListener(this::onMenuItemSelected)
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(this::onMenuItemSelected)
     }
 
     private fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.top_radios_menu_item -> viewModel.topSelected()
-            R.id.favorites_radios_menu_item -> viewModel.favoritesSelected()
+            R.id.top_radios_menu_item -> mainViewModel.topSelected()
+            R.id.favorites_radios_menu_item -> mainViewModel.favoritesSelected()
             else -> return false
         }
         return true
