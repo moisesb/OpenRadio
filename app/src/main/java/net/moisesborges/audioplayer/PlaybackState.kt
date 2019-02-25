@@ -1,3 +1,3 @@
-package net.moisesborges.ui.audio.player
+package net.moisesborges.audioplayer
 
 data class PlaybackState(val playing: Boolean)
