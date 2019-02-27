@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import net.moisesborges.R
-import net.moisesborges.databinding.ActivityAudioPlayerBinding
+import net.moisesborges.databinding.ActivityStationBinding
 import net.moisesborges.model.Station
 import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.station.mvvm.StationViewModel
@@ -18,7 +18,7 @@ private const val STATION_ARG = "StationActivity.station"
 
 class StationActivity : LifecycleActivity() {
 
-    private lateinit var binding: ActivityAudioPlayerBinding
+    private lateinit var binding: ActivityStationBinding
 
     private val station: Station by lazy { intent.getParcelableExtra<Station>(STATION_ARG) }
     private val stationViewModel: StationViewModel by inject { parametersOf(station) }
@@ -26,7 +26,7 @@ class StationActivity : LifecycleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_audio_player)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_station)
         binding.lifecycleOwner = this
         binding.stationViewModel = stationViewModel
         binding.audioPlayerViewModel = audioPlayerViewModel

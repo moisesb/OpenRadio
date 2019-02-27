@@ -16,7 +16,7 @@ class StationViewModelTest : BaseViewModeTest() {
 
     lateinit var testSubject: StationViewModel
 
-    @Before fun setup() {
+    override fun setup() {
         testSubject = StationViewModel(station, navigator)
     }
 
