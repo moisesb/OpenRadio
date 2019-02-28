@@ -12,14 +12,17 @@ data class Station(
     val thumbnail: Image,
     val genres: List<Genre>,
     val stream: Stream?
-) : Parcelable
+) : Parcelable {
 
-fun emptyStation() = Station(
-    0,
-    "",
-    "",
-    Image(""),
-    Image(""),
-    emptyList(),
-    Stream("", 0, "")
-)
+    companion object {
+        @JvmField val EMPTY_STATION = Station(
+            0,
+            "",
+            "",
+            Image(""),
+            Image(""),
+            emptyList(),
+            Stream("", 0, "")
+        )
+    }
+}

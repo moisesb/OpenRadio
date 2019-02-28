@@ -10,9 +10,10 @@ import io.reactivex.subjects.BehaviorSubject
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.base.BaseViewModeTest
+import net.moisesborges.extensions.get
 import net.moisesborges.model.Station
 import net.moisesborges.model.Stream
-import org.junit.Before
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class AudioPlayerViewModelTest : BaseViewModeTest() {
@@ -25,7 +26,7 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
 
     lateinit var testSubject: AudioPlayerViewModel
 
-    @Before fun setup() {
+    override fun setup() {
         testSubject = AudioPlayerViewModel(audioPlayer)
     }
 
@@ -66,6 +67,21 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
         testSubject.playPause()
 
         verify(audioPlayer).play()
+    }
+
+    @Test fun `given playPause is called, when isEmpty, then it should be false`() {
+        testSubject.prepareNextStation(givenNextStation("anyUrl"))
+        testSubject.playPause()
+
+        val isEmpty = testSubject.isEmpty.extractValue()
+
+        isEmpty `should be equal to` false
+    }
+
+    @Test fun `given playPause was not called, when isEmpty, then it should be true`() {
+        val isEmpty = testSubject.isEmpty.extractValue()
+
+        isEmpty `should be equal to` true
     }
 
     private fun givenNextStation(expectedStreamUrl: String): Station {

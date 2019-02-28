@@ -6,7 +6,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import net.moisesborges.base.BaseViewModeTest
 import net.moisesborges.base.createTestStation
-import org.junit.Before
 
 class StationViewModelTest : BaseViewModeTest() {
 
@@ -16,7 +15,7 @@ class StationViewModelTest : BaseViewModeTest() {
 
     lateinit var testSubject: StationViewModel
 
-    @Before fun setup() {
+    override fun setup() {
         testSubject = StationViewModel(station, navigator)
     }
 

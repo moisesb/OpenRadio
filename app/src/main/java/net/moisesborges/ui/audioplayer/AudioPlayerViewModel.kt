@@ -10,9 +10,7 @@ import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.Image
 import net.moisesborges.model.Station
 
-class AudioPlayerViewModel(
-    private val audioPlayer: AudioPlayer
-) {
+class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
 
     private val disposables = CompositeDisposable()
     private val state: MutableLiveData<AudioPlayerState> = MutableLiveData<AudioPlayerState>().also {
@@ -22,6 +20,9 @@ class AudioPlayerViewModel(
     val title: LiveData<String> = Transformations.map(state) { state -> state.currentStation.name }
     val image: LiveData<Image> = Transformations.map(state) { state -> state.currentStation.image }
     val isPlaying: LiveData<Boolean> = Transformations.map(state) { state -> state.playbackState.playing }
+    val isEmpty: LiveData<Boolean> = Transformations.map(state) { state ->
+        state.currentStation == Station.EMPTY_STATION
+    }
 
     init {
         disposables += audioPlayer.playbackState()
@@ -52,7 +53,7 @@ class AudioPlayerViewModel(
         if (stream != null) {
             audioPlayer.load(stream.streamUrl)
             audioPlayer.play()
-            state.value = state.get().copy(nextStation = null)
+            state.value = state.get().copy(currentStation = nextStation, nextStation = null)
         } else {
             // TODO: handle error when stream is not present
         }

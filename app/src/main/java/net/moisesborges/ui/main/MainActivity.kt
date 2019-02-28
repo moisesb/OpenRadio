@@ -25,6 +25,8 @@ class MainActivity : LifecycleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.audioPlayerViewModel = audioPlayerViewModel
 
         mainViewModel.radioSelection.observe(this, Observer {
             val fragment = when (it) {
