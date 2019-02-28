@@ -9,8 +9,9 @@ import net.moisesborges.databinding.ActivityMainBinding
 import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.favorites.FavoritesRadioFragment
-import net.moisesborges.ui.main.mvvm.RadioSelection
+import net.moisesborges.ui.main.mvvm.PageSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
+import net.moisesborges.ui.settings.SettingsFragment
 import net.moisesborges.ui.top.TopStationsFragment
 import org.koin.android.ext.android.get
 import java.lang.IllegalStateException
@@ -28,10 +29,11 @@ class MainActivity : LifecycleActivity() {
         binding.lifecycleOwner = this
         binding.audioPlayerViewModel = audioPlayerViewModel
 
-        mainViewModel.radioSelection.observe(this, Observer {
+        mainViewModel.pageSelection.observe(this, Observer {
             val fragment = when (it) {
-                RadioSelection.TOP -> TopStationsFragment()
-                RadioSelection.FAVOURITES -> FavoritesRadioFragment()
+                PageSelection.TOP_RADIOS -> TopStationsFragment()
+                PageSelection.FAVOURITES_RADIOS -> FavoritesRadioFragment()
+                PageSelection.SETTINGS -> SettingsFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }
             supportFragmentManager.beginTransaction()
@@ -45,8 +47,9 @@ class MainActivity : LifecycleActivity() {
 
     private fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.top_radios_menu_item -> mainViewModel.topSelected()
-            R.id.favorites_radios_menu_item -> mainViewModel.favoritesSelected()
+            R.id.top_radios_menu_item -> mainViewModel.topRadiosSelected()
+            R.id.favorites_radios_menu_item -> mainViewModel.favoritesRadiosSelected()
+            R.id.settings_menu_item -> mainViewModel.settingsSelected()
             else -> return false
         }
         return true

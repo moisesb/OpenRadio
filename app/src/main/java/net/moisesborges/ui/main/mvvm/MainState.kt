@@ -1,9 +1,9 @@
 package net.moisesborges.ui.main.mvvm
 
-data class MainActivityState(val radioSelection: RadioSelection)
+data class MainActivityState(val pageSelection: PageSelection)
 
-enum class RadioSelection {
-    TOP, FAVOURITES
+enum class PageSelection {
+    TOP_RADIOS, FAVOURITES_RADIOS, SETTINGS
 }
 
-fun initialMainActivityState() = MainActivityState(RadioSelection.TOP)
+fun initialMainActivityState() = MainActivityState(PageSelection.TOP_RADIOS)

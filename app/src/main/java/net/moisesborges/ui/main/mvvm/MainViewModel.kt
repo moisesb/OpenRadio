@@ -12,13 +12,21 @@ class MainViewModel : ViewModel() {
         it.value = initialMainActivityState()
     }
 
-    val radioSelection: LiveData<RadioSelection> = Transformations.map(state) { it.radioSelection }
+    val pageSelection: LiveData<PageSelection> = Transformations.map(state) { it.pageSelection }
 
-    fun topSelected() {
-        state.value = state.get().copy(radioSelection = RadioSelection.TOP)
+    fun topRadiosSelected() {
+        setPageSelection(PageSelection.TOP_RADIOS)
     }
 
-    fun favoritesSelected() {
-        state.value = state.get().copy(radioSelection = RadioSelection.FAVOURITES)
+    fun favoritesRadiosSelected() {
+        setPageSelection(PageSelection.FAVOURITES_RADIOS)
+    }
+
+    fun settingsSelected() {
+        setPageSelection(PageSelection.SETTINGS)
+    }
+
+    private fun setPageSelection(pageSelection: PageSelection) {
+        state.value = state.get().copy(pageSelection = pageSelection)
     }
 }
