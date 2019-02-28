@@ -1,7 +1,11 @@
 package net.moisesborges.base
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import net.moisesborges.extensions.get
 import org.amshove.kluent.mock
 import org.junit.Before

@@ -1,6 +1,5 @@
 package net.moisesborges.ui.audioplayer
 
-import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.never
@@ -15,7 +14,6 @@ import net.moisesborges.extensions.get
 import net.moisesborges.model.Station
 import net.moisesborges.model.Stream
 import org.amshove.kluent.`should be equal to`
-import org.junit.Before
 import org.junit.Test
 
 class AudioPlayerViewModelTest : BaseViewModeTest() {
@@ -83,7 +81,7 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
     @Test fun `given playPause was not called, when isEmpty, then it should be true`() {
         val isEmpty = testSubject.isEmpty.extractValue()
 
-        isEmpty `should be equal to`  true
+        isEmpty `should be equal to` true
     }
 
     private fun givenNextStation(expectedStreamUrl: String): Station {
