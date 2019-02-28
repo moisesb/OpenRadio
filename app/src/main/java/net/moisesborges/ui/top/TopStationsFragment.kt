@@ -5,20 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.ui.top.mvvm.TopStationsViewModel
 import net.moisesborges.databinding.FragmentTopStationsBinding
+import net.moisesborges.ui.base.LifecycleFragment
 import net.moisesborges.ui.top.adapter.TopStationItemViewModelFactory
 import net.moisesborges.ui.top.adapter.TopStationsAdapter
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
-class TopStationsFragment : Fragment(), LifecycleOwner {
+class TopStationsFragment : LifecycleFragment() {
 
     private lateinit var binding: FragmentTopStationsBinding
 
