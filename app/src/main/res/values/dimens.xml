@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- MainActivity -->
+    <dimen name="audio_player_container_height">64dp</dimen>
+
     <!-- TopStationsFragment -->
     <dimen name="top_station_item_height">96dp</dimen>
     <dimen name="top_station_item_image_size">80dp</dimen>
@@ -15,4 +18,9 @@
     <dimen name="station_title_text_size">24dp</dimen>
     <dimen name="station_title_margin_top">24dp</dimen>
     <dimen name="station_title_margin_horizontal">16dp</dimen>
+
+    <!-- AudioPlayer -->
+    <dimen name="audio_player_play_pause_button_size">36dp</dimen>
+    <dimen name="audio_player_margin">8dp</dimen>
+    <dimen name="audio_player_station_name_size">18dp</dimen>
 </resources>

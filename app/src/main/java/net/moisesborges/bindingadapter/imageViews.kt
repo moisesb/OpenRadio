@@ -10,9 +10,12 @@ import net.moisesborges.model.Image
 
 @BindingAdapter("setImage")
 fun setImageBinding(view: ImageView, image: Image?) {
-    Picasso.get()
-        .load(image?.url)
-        .into(view)
+    val imageUrl = image?.url ?: return
+    if (imageUrl.isNotEmpty()) {
+        Picasso.get()
+            .load(imageUrl)
+            .into(view)
+    }
 }
 
 @BindingAdapter("togglePlayPause")
