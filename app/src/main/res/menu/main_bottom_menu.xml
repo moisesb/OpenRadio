@@ -9,4 +9,8 @@
             android:title="@string/favorites_radios_menu_title"
             android:icon="@drawable/ic_baseline_favorite_24px"/>
 
+    <item   android:id="@+id/settings_menu_item"
+            android:title="@string/settings_menu_title"
+            android:icon="@drawable/ic_baseline_settings_20px"/>
+
 </menu>
