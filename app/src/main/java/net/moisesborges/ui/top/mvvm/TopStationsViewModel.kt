@@ -47,7 +47,7 @@ class TopStationsViewModel(
     private fun onErrorHappened(error: Throwable) {
         Timber.e(error)
         state.value = state.get().copy(stations = emptyList(), loading = false)
-        paginationLoader.onPageLoaded()
+        paginationLoader.onLoadFailed()
     }
 
     private fun onStationsLoaded(stations: List<Station>) {
