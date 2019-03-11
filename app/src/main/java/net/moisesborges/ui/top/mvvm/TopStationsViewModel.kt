@@ -13,7 +13,8 @@ import net.moisesborges.model.Station
 import timber.log.Timber
 
 class TopStationsViewModel(
-    private val dirbleApi: DirbleApi
+    private val dirbleApi: DirbleApi,
+    private val paginationLoader: PaginationLoader
 ) {
 
     private val disposables = CompositeDisposable()
@@ -24,24 +25,34 @@ class TopStationsViewModel(
     val stations: LiveData<List<Station>> = Transformations.map(state) { it.stations }
     val isLoading: LiveData<Boolean> = Transformations.map(state) { it.loading }
 
-    fun loadTopRadios() {
-        state.value = state.get().copy(loading = true)
-        disposables += dirbleApi.getPopularStations()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::onStationsLoaded, this::onErrorHappened)
+    init {
+        paginationLoader.loadPage()
+            .subscribe { pageNumber ->
+                loadTopRadios(pageNumber)
+            }
     }
 
     fun clear() {
         disposables.clear()
     }
 
+    private fun loadTopRadios(pageNumber: Int) {
+        state.value = state.get().copy(loading = true)
+        disposables += dirbleApi.getPopularStations(pageNumber)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::onStationsLoaded, this::onErrorHappened)
+    }
+
     private fun onErrorHappened(error: Throwable) {
         Timber.e(error)
         state.value = state.get().copy(stations = emptyList(), loading = false)
+        paginationLoader.onLoadFailed()
     }
 
     private fun onStationsLoaded(stations: List<Station>) {
-        state.value = state.get().copy(stations = stations, loading = false)
+        val topStationsState = state.get()
+        state.value = topStationsState.copy(stations = topStationsState.stations + stations, loading = false)
+        paginationLoader.onPageLoaded()
     }
 }

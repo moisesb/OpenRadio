@@ -12,6 +12,7 @@ import net.moisesborges.R
 import net.moisesborges.ui.top.mvvm.TopStationsViewModel
 import net.moisesborges.databinding.FragmentTopStationsBinding
 import net.moisesborges.ui.base.LifecycleFragment
+import net.moisesborges.ui.top.mvvm.PaginationDetector
 import net.moisesborges.ui.top.adapter.TopStationItemViewModelFactory
 import net.moisesborges.ui.top.adapter.TopStationsAdapter
 import org.koin.android.ext.android.get
@@ -23,8 +24,9 @@ class TopStationsFragment : LifecycleFragment() {
 
     private val viewModel: TopStationsViewModel by inject()
     private val topStationItemViewModelFactory: TopStationItemViewModelFactory = get()
+    private val paginationDetector: PaginationDetector = get()
 
-    private val adapter = TopStationsAdapter(topStationItemViewModelFactory)
+    private val adapter = TopStationsAdapter(topStationItemViewModelFactory, paginationDetector)
     private val stationsRecyclerView: RecyclerView by lazy { view!!.findViewById<RecyclerView>(R.id.stations_recycler_view) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,8 +48,6 @@ class TopStationsFragment : LifecycleFragment() {
         viewModel.stations.observe(this, Observer { stations ->
             adapter.setStations(stations)
         })
-
-        viewModel.loadTopRadios()
     }
 
     override fun onDestroyView() {
