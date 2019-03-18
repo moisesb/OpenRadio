@@ -1,12 +1,13 @@
 package net.moisesborges.ui.top.adapter
 
+import net.moisesborges.features.favorite.FavoriteStationManager
 import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
-import timber.log.Timber
 
 class TopStationItemViewModel(
     private val station: Station,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val favoriteStationManager: FavoriteStationManager
 ) {
 
     val title = station.name
@@ -18,6 +19,6 @@ class TopStationItemViewModel(
     }
 
     fun favoriteSelected() {
-        Timber.d("favorte $station")
+        favoriteStationManager.toggleState(station)
     }
 }

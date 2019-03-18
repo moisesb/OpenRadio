@@ -2,7 +2,9 @@ package net.moisesborges
 
 import android.app.Application
 import net.moisesborges.api.di.apiModule
+import net.moisesborges.db.di.databaseModule
 import net.moisesborges.di.appModule
+import net.moisesborges.features.di.featuresModule
 import net.moisesborges.ui.audioplayer.di.audioPlayerModule
 import net.moisesborges.ui.station.di.stationActivityModule
 import net.moisesborges.ui.main.di.mainActivityModule
@@ -28,7 +30,9 @@ class App : Application() {
             mainActivityModule,
             topFragmentsModule,
             audioPlayerModule,
-            stationActivityModule
+            stationActivityModule,
+            databaseModule,
+            featuresModule
         )
     }
 
