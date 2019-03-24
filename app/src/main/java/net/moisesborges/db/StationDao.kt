@@ -6,6 +6,7 @@ import androidx.room.Update
 import androidx.room.Delete
 import androidx.room.Insert
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface StationDao {
@@ -20,7 +21,7 @@ interface StationDao {
     fun deleteStation(stationEntity: StationEntity)
 
     @Query("SELECT * FROM station WHERE id = (:stationId)")
-    fun fetchStation(stationId: Int): Flowable<StationEntity>
+    fun fetchStation(stationId: Int): Maybe<StationEntity>
 
     @Query("SELECT * FROM station")
     fun fetchAllStations(): Flowable<List<StationEntity>>

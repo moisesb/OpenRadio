@@ -25,3 +25,11 @@ fun togglePlayPauseBinding(view: ImageView, isPlaying: Boolean) {
     val drawable = ContextCompat.getDrawable(view.context, res)
     view.setImageDrawable(drawable)
 }
+
+@BindingAdapter("toggleFavorite")
+fun toggleFavoriteBinding(view: ImageView, isSaved: Boolean) {
+    @DrawableRes val res = if (!isSaved) R.drawable.ic_baseline_favorite_border_24px
+    else R.drawable.ic_baseline_favorite_24px
+    val drawable = ContextCompat.getDrawable(view.context, res)
+    view.setImageDrawable(drawable)
+}

@@ -17,14 +17,6 @@ data class StationEntity(
     var streamContentType: String?,
     var streamBitrate: Int?
 ) {
-    @Ignore
+
     constructor() : this(-1, "", "", "", "", emptyList(), null, null, null)
 }
-
-// TODO: add those fields later
-//@ColumnInfo(name = "created_at")
-//@TypeConverters({TimestampConverter.class})
-//val createdAt: Date,
-//@ColumnInfo(name = "modified_at")
-//@TypeConverters({TimestampConverter.class})
-//val modifiedAt: Date

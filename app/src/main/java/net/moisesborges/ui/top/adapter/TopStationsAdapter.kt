@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.databinding.TopStationItemBinding
 import net.moisesborges.model.Station
+import net.moisesborges.ui.base.BaseLifecycleViewHolder
+import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.top.mvvm.PaginationDetector
 
 class TopStationsAdapter(
@@ -36,6 +38,16 @@ class TopStationsAdapter(
         return stations.size
     }
 
+    override fun onViewAttachedToWindow(viewHolder: StationViewHolder) {
+        super.onViewAttachedToWindow(viewHolder)
+        viewHolder.attachToWindow()
+    }
+
+    override fun onViewDetachedFromWindow(viewHolder: StationViewHolder) {
+        super.onViewDetachedFromWindow(viewHolder)
+        viewHolder.detachFromWindow()
+    }
+
     override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
         val station = stations[position]
         holder.bind(topStationItemViewModelFactory.create(station))
@@ -44,8 +56,13 @@ class TopStationsAdapter(
 }
 
 class StationViewHolder(
-    private val binding: TopStationItemBinding
-) : RecyclerView.ViewHolder(binding.root) {
+    private val binding: TopStationItemBinding,
+    private val delegate: LifecycleViewHolder = BaseLifecycleViewHolder()
+) : RecyclerView.ViewHolder(binding.root), LifecycleViewHolder by delegate {
+
+    init {
+        binding.lifecycleOwner = delegate
+    }
 
     fun bind(viewModel: TopStationItemViewModel) {
         binding.viewModel = viewModel
