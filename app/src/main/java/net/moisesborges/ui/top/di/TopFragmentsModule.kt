@@ -12,5 +12,5 @@ val topFragmentsModule = module {
     single<PaginationLoader> { get<PaginationManager>() }
     single<PaginationDetector> { get<PaginationManager>() }
     single { TopStationsViewModel(get(), get()) }
-    factory { TopStationItemViewModelFactory(get()) }
+    factory { TopStationItemViewModelFactory(get(), get(), get()) }
 }

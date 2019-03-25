@@ -6,6 +6,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.ui.navigation.ActivityProvider
 import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.utils.RxSchedulers
 import org.koin.dsl.module.module
 
 val appModule = { context: Context ->
@@ -15,5 +16,6 @@ val appModule = { context: Context ->
         single { Navigator(get()) }
         single<ExoPlayer> { ExoPlayerFactory.newSimpleInstance(get()) }
         single { AudioPlayer(get(), get()) }
+        single { RxSchedulers() }
     }
 }

@@ -61,10 +61,10 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_baseline_favorite_border_24px"
                 android:onClick="@{() -> viewModel.favoriteSelected()}"
                 android:padding="@dimen/top_station_item_image_margin"
                 android:layout_marginEnd="@dimen/top_station_item_image_margin"
+                app:toggleFavorite="@{viewModel.isFavorite()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
