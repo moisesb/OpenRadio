@@ -22,7 +22,7 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     val favoriteState = BehaviorSubject.create<Boolean>()
 
     val favoriteStationManager: FavoriteStationManager = mock {
-        on { favoriteState(any()) } doReturn Single.fromCallable { false }
+        on { favoriteState(any()) } doReturn Single.just(false)
     }
 
     val navigator: Navigator = mock()
@@ -34,7 +34,7 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     }
 
     @Test fun `When itemSelected, the should navigate to audio player for that station`() {
-        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.fromCallable { true })
+        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.just(true))
 
         testSubject.itemSelected()
 
@@ -42,7 +42,7 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     }
 
     @Test fun `When favoriteSelected, then it should call toggleState`() {
-        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.fromCallable { false })
+        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.just(false))
 
         testSubject.favoriteSelected()
 
@@ -50,7 +50,7 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     }
 
     @Test fun `given station was not saved, when favoriteSelected, then isFavorite should be true`() {
-        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.fromCallable { true })
+        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.just(true))
 
         testSubject.favoriteSelected()
 
@@ -58,7 +58,7 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     }
 
     @Test fun `given station was saved, when favoriteSelected, then isFavorite should be false`() {
-        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.fromCallable { false })
+        whenever(favoriteStationManager.toggleState(any())).doReturn(Single.just(false))
 
         testSubject.favoriteSelected()
 
