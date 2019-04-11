@@ -1,8 +1,10 @@
 package net.moisesborges.db
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "station")
 data class StationEntity(
@@ -15,8 +17,10 @@ data class StationEntity(
     @Ignore var genres: List<GenreEntity>,
     var streamUrl: String?,
     var streamContentType: String?,
-    var streamBitrate: Int?
+    var streamBitrate: Int?,
+    @ColumnInfo(name = "created_at")
+    var createdAt: Date?
 ) {
 
-    constructor() : this(-1, "", "", "", "", emptyList(), null, null, null)
+    constructor() : this(-1, "", "", "", "", emptyList(), null, null, null, null)
 }

@@ -1,5 +1,6 @@
 package net.moisesborges.features.favorite
 
+import io.reactivex.Observable
 import io.reactivex.Single
 import net.moisesborges.db.StationsRepository
 import net.moisesborges.model.Station
@@ -21,5 +22,9 @@ class FavoriteStationManager(private val stationsRepository: StationsRepository)
                 }
                 completable.andThen(favoriteState(station.id))
             }
+    }
+
+    fun favoriteStations(): Observable<List<Station>> {
+        return stationsRepository.getAllStations()
     }
 }
