@@ -7,12 +7,14 @@ import net.moisesborges.model.Genre
 import net.moisesborges.model.Image
 import net.moisesborges.model.Station
 import net.moisesborges.model.Stream
+import java.util.Date
 
 class StationsRepository(private val stationDao: StationDao) {
 
     fun saveStation(station: Station): Completable {
         return Completable.fromAction {
             val stationEntity = stationToEntity(station)
+            stationEntity.createdAt = Date()
             stationDao.insertStation(stationEntity)
         }
     }
@@ -50,7 +52,8 @@ class StationsRepository(private val stationDao: StationDao) {
             station.genres.map { genre -> GenreEntity(genre.id, genre.title) },
             station.stream?.streamUrl,
             station.stream?.contentType,
-            station.stream?.bitrate
+            station.stream?.bitrate,
+            null
         )
     }
 

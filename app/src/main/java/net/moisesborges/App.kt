@@ -6,6 +6,7 @@ import net.moisesborges.db.di.databaseModule
 import net.moisesborges.di.appModule
 import net.moisesborges.features.di.featuresModule
 import net.moisesborges.ui.audioplayer.di.audioPlayerModule
+import net.moisesborges.ui.favorites.di.favoritesModule
 import net.moisesborges.ui.station.di.stationActivityModule
 import net.moisesborges.ui.main.di.mainActivityModule
 import net.moisesborges.ui.top.di.topFragmentsModule
@@ -29,6 +30,7 @@ class App : Application() {
             apiModule,
             mainActivityModule,
             topFragmentsModule,
+            favoritesModule,
             audioPlayerModule,
             stationActivityModule,
             databaseModule,

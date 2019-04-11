@@ -1,30 +1,26 @@
 package net.moisesborges.ui.base
 
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.recyclerview.widget.RecyclerView
 
-interface LifecycleViewHolder : LifecycleOwner {
-
-    fun attachToWindow()
-
-    fun detachFromWindow()
-}
-
-class BaseLifecycleViewHolder : LifecycleViewHolder {
+abstract class LifecycleViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     init {
         lifecycleRegistry.markState(Lifecycle.State.INITIALIZED)
         lifecycleRegistry.markState(Lifecycle.State.STARTED)
+        binding.lifecycleOwner = this
     }
 
-    override fun attachToWindow() {
+    fun attachToWindow() {
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
-    override fun detachFromWindow() {
+    fun detachFromWindow() {
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     }
 

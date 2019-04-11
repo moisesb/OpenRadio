@@ -8,7 +8,7 @@ import net.moisesborges.R
 import net.moisesborges.databinding.ActivityMainBinding
 import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.base.LifecycleActivity
-import net.moisesborges.ui.favorites.FavoritesRadioFragment
+import net.moisesborges.ui.favorites.FavoritesStationsFragment
 import net.moisesborges.ui.main.mvvm.PageSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
 import net.moisesborges.ui.settings.SettingsFragment
@@ -32,7 +32,7 @@ class MainActivity : LifecycleActivity() {
         mainViewModel.pageSelection.observe(this, Observer {
             val fragment = when (it) {
                 PageSelection.TOP_RADIOS -> TopStationsFragment()
-                PageSelection.FAVOURITES_RADIOS -> FavoritesRadioFragment()
+                PageSelection.FAVOURITES_RADIOS -> FavoritesStationsFragment()
                 PageSelection.SETTINGS -> SettingsFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }

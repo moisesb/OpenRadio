@@ -20,7 +20,7 @@ interface StationDao {
     @Delete
     fun deleteStation(stationEntity: StationEntity)
 
-    @Query("SELECT * FROM station WHERE id = (:stationId)")
+    @Query("SELECT * FROM station WHERE id = (:stationId) ORDER BY created_at DESC")
     fun fetchStation(stationId: Int): Maybe<StationEntity>
 
     @Query("SELECT * FROM station")

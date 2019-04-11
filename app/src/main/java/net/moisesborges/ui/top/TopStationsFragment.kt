@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_top_stations.*
 import net.moisesborges.R
 import net.moisesborges.ui.top.mvvm.TopStationsViewModel
 import net.moisesborges.databinding.FragmentTopStationsBinding
@@ -27,7 +28,7 @@ class TopStationsFragment : LifecycleFragment() {
     private val paginationDetector: PaginationDetector = get()
 
     private val adapter = TopStationsAdapter(topStationItemViewModelFactory, paginationDetector)
-    private val stationsRecyclerView: RecyclerView by lazy { view!!.findViewById<RecyclerView>(R.id.stations_recycler_view) }
+    private val stationsRecyclerView: RecyclerView by lazy { stations_recycler_view }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top_stations, container, false)
