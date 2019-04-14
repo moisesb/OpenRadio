@@ -60,5 +60,5 @@ val apiModule = module {
 
     single<DirbleApi> { get<Retrofit>(DIRBLE_KEY).create(DirbleApi::class.java) }
 
-    single<KeyCdnApi> {  get<Retrofit>(KEY_CND_KEY).create(KeyCdnApi::class.java) }
+    single<KeyCdnApi> { get<Retrofit>(KEY_CND_KEY).create(KeyCdnApi::class.java) }
 }

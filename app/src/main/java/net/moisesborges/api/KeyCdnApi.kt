@@ -9,5 +9,5 @@ const val keyCdnUrl = "https://tools.keycdn.com/"
 interface KeyCdnApi {
 
     @GET("geo.json")
-    fun getGeolocation() : Single<Location>
+    fun getGeolocation(): Single<Location>
 }
