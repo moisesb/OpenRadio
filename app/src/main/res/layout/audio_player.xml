@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="net.moisesborges.ui.audioplayer.AudioPlayerViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/audio_player_background_color">
+
+        <ImageView
+                android:id="@+id/audio_player_station_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:setImage="@{viewModel.image}"
+                android:layout_margin="@dimen/audio_player_margin"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.title}"
+                android:textSize="@dimen/audio_player_station_name_size"
+                android:textColor="@color/audio_player_station_name_color"
+                android:fontFamily="@font/roboto_medium"
+                android:maxLines="1"
+                android:layout_marginStart="@dimen/audio_player_margin"
+                android:layout_marginEnd="@dimen/audio_player_margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/audio_player_station_image"
+                app:layout_constraintEnd_toStartOf="@+id/audio_player_play_pause_button"
+                tools:text="Station Name"
+                tools:ignore="SpUsage"/>
+
+        <ImageView
+                android:id="@+id/audio_player_play_pause_button"
+                android:layout_width="@dimen/audio_player_play_pause_button_size"
+                android:layout_height="@dimen/audio_player_play_pause_button_size"
+                android:layout_margin="@dimen/audio_player_margin"
+                android:scaleType="fitXY"
+                android:tint="@color/audio_player_play_pause_button_color"
+                android:onClick="@{() -> viewModel.playPause()}"
+                app:togglePlayPause="@{viewModel.isPlaying}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

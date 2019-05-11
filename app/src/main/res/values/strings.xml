@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Open Radio</string>
+
+    <!-- MainActivity -->
+    <string name="top_radios_menu_title">Top</string>
+    <string name="favorites_radios_menu_title">Favorites</string>
+    <string name="settings_menu_title">Settings</string>
+    <string name="search_menu_item_title">Search</string>
+
+    <!-- FavoritesStationsFragment -->
+    <string name="empty_favorite_station_list">Empty favorite station list</string>
+
+    <!-- SearchActivity -->
+    <string name="search_hint">Search stations</string>
+</resources>
