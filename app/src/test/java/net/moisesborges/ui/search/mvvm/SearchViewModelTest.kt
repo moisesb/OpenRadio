@@ -23,5 +23,4 @@ class SearchViewModelTest : BaseViewModeTest() {
     fun `when search nor started, then result must be empty`() {
         testSubject.result.extractValue() `should be` emptyList()
     }
-
 }
