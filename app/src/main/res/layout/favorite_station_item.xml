@@ -40,7 +40,7 @@
                 android:layout_marginEnd="@dimen/favorite_station_item_image_margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/station_item_image_view"
-                app:layout_constraintEnd_toStartOf="@+id/station_item_favorite_button"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Top Station"
                 tools:ignore="SpUsage"/>
 

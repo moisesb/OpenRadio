@@ -16,8 +16,8 @@ class FavoritesViewModel(
 ) {
     private var disposable: Disposable = Disposables.empty()
 
-    private val state = MutableLiveData<FavoritesState>().also {
-        it.value = initialFavoritesState()
+    private val state = MutableLiveData<FavouritesState>().also {
+        it.value = initialFavouritesState()
     }
 
     val isLoading: LiveData<Boolean> = Transformations.map(state) { it.isLoading }

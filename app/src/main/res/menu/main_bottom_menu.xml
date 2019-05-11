@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item   android:id="@+id/top_radios_menu_item"
+    <item   android:id="@+id/top_stations_menu_item"
             android:title="@string/top_radios_menu_title"
             android:icon="@drawable/ic_baseline_star_24px"/>
 
-    <item   android:id="@+id/favorites_radios_menu_item"
+    <item   android:id="@+id/favorites_stations_menu_item"
             android:title="@string/favorites_radios_menu_title"
             android:icon="@drawable/ic_baseline_favorite_24px"/>
 

@@ -34,7 +34,7 @@ class MainActivityTest {
     }
 
     @Test fun whenFavoritesRadiosIsSelectedThenDisplayFavoritesRadiosFragment() {
-        onView(withId(R.id.favorites_radios_menu_item))
+        onView(withId(R.id.favorites_stations_menu_item))
             .perform(click())
 
         onView(withId(R.id.favorites_radios_container))
@@ -42,9 +42,9 @@ class MainActivityTest {
     }
 
     @Test fun whenTopRadiosIsSelectedThenDisplayTopRadiosFragment() {
-        onView(withId(R.id.favorites_radios_menu_item))
+        onView(withId(R.id.favorites_stations_menu_item))
             .perform(click())
-        onView(withId(R.id.top_radios_menu_item))
+        onView(withId(R.id.top_stations_menu_item))
             .perform(click())
 
         onView(withId(R.id.top_radio_fragment_container))

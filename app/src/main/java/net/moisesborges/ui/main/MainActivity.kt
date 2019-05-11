@@ -1,6 +1,7 @@
 package net.moisesborges.ui.main
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -43,12 +44,27 @@ class MainActivity : LifecycleActivity() {
 
         binding.toolbar.setOnMenuItemClickListener(this::onMenuItemSelected)
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this::onMenuItemSelected)
+
+        setSupportActionBar(binding.toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_top_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search_menu_item -> mainViewModel.searchSelected()
+            else -> return false
+        }
+        return true
     }
 
     private fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.top_radios_menu_item -> mainViewModel.topRadiosSelected()
-            R.id.favorites_radios_menu_item -> mainViewModel.favoritesRadiosSelected()
+            R.id.top_stations_menu_item -> mainViewModel.topRadiosSelected()
+            R.id.favorites_stations_menu_item -> mainViewModel.favoritesRadiosSelected()
             R.id.settings_menu_item -> mainViewModel.settingsSelected()
             else -> return false
         }
