@@ -14,6 +14,8 @@
     <string name="search_hint">Search stations</string>
 
     <!-- AudioPlayerNotificationManager -->
-    <string name="channel_name">Audio Player Controls</string>
-    <string name="channel_description">Enable audio controls when app is in background</string>
+    <string name="audio_channel_name">Audio Player Controls</string>
+    <string name="audio_channel_description">Enable audio controls when app is in background</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_play">Play</string>
 </resources>

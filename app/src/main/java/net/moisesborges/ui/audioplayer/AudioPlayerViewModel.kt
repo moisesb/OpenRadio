@@ -5,12 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import io.reactivex.disposables.CompositeDisposable
 import net.moisesborges.audioplayer.AudioPlayer
+import net.moisesborges.audioplayer.AudioPlayerNotificationManager
+import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.extensions.get
 import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.ImageUrl
 import net.moisesborges.model.Station
 
-class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
+class AudioPlayerViewModel(
+    private val audioPlayer: AudioPlayer,
+    private val audioPlayerNotificationManager: AudioPlayerNotificationManager
+) {
 
     private val disposables = CompositeDisposable()
     private val state: MutableLiveData<AudioPlayerState> = MutableLiveData<AudioPlayerState>().also {
@@ -28,6 +33,7 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
         disposables += audioPlayer.playbackState()
             .subscribe { playbackState ->
                 state.value = state.get().copy(playbackState = playbackState)
+                updateNotification(playbackState)
             }
     }
 
@@ -61,5 +67,15 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
         } else {
             audioPlayer.play()
         }
+    }
+
+    private fun updateNotification(playbackState: PlaybackState) {
+        val currentStation = state.get().currentStation
+        if (currentStation == Station.EMPTY_STATION) {
+            return
+        }
+        val playerState = if (playbackState.playing) AudioPlayerNotificationManager.PlayerState.PLAYING
+        else AudioPlayerNotificationManager.PlayerState.STOPED
+        audioPlayerNotificationManager.createOrUpdateNotification(currentStation, playerState)
     }
 }
