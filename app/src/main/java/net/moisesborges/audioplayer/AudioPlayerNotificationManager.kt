@@ -6,6 +6,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.reactivex.disposables.Disposable
@@ -24,12 +26,13 @@ private const val NOTIFICATION_ID = 1
 // TODO: Prevent user from dismiss the notification if still playing
 class AudioPlayerNotificationManager(
     private val context: Context,
+    private val mediaSessionCompat: MediaSessionCompat,
     private val bitmapFactory: BitmapFactory,
     private val rxSchedulers: RxSchedulers
 ) {
 
     enum class PlayerState {
-        PLAYING, STOPED
+        PLAYING, STOPPED
     }
 
     private var disposable: Disposable = Disposables.empty()
@@ -68,8 +71,13 @@ class AudioPlayerNotificationManager(
 
         val stationActivityPendingIntent = PendingIntent.getActivity(context, 0, stationActivityIntent, 0)
 
+        val stopPendingIntent = createPlayStopPendingIntent(context)
+
         val style = MediaNotificationCompat.MediaStyle()
             .setShowActionsInCompactView(0)
+            .setMediaSession(mediaSessionCompat.sessionToken)
+            .setShowCancelButton(true)
+            .setCancelButtonIntent(stopPendingIntent)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -77,18 +85,19 @@ class AudioPlayerNotificationManager(
             .setLargeIcon(thumbnail)
             .setContentTitle(currentPlayingStation.name)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDeleteIntent(stopPendingIntent)
             .setStyle(style)
             .setContentIntent(stationActivityPendingIntent)
             .setAutoCancel(false)
             .setOngoing(true)
 
-        val playStopPendingIntent = PendingIntent.getBroadcast(context, 1, createPlayStopIntent(), 0)
+        val playStopPendingIntent = createPlayStopPendingIntent(context)
 
         when (playerState) {
             PlayerState.PLAYING -> {
                 builder.addAction(R.drawable.ic_baseline_pause_24px, context.getString(R.string.action_stop), playStopPendingIntent)
             }
-            PlayerState.STOPED -> {
+            PlayerState.STOPPED -> {
                 builder.addAction(R.drawable.ic_baseline_play_arrow_24px, context.getString(R.string.action_play), playStopPendingIntent)
             }
         }

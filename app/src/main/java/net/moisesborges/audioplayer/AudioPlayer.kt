@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.net.toUri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -16,6 +17,7 @@ private const val APPLICATION_NAME = "Open Radio"
 
 class AudioPlayer(
     private val playerDelegate: ExoPlayer,
+    mediaSessionConnector: MediaSessionConnector,
     context: Context
 ) {
 
@@ -32,6 +34,7 @@ class AudioPlayer(
 
     init {
         playerDelegate.addListener(playerListener)
+        mediaSessionConnector.setPlayer(playerDelegate, null)
     }
 
     fun load(streamUri: String) {

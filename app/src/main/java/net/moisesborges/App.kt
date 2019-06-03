@@ -8,6 +8,7 @@ import net.moisesborges.db.di.databaseModule
 import net.moisesborges.di.appModule
 import net.moisesborges.features.di.featuresModule
 import net.moisesborges.features.location.LocationProvider
+import net.moisesborges.model.Station
 import net.moisesborges.ui.audioplayer.di.audioPlayerModule
 import net.moisesborges.ui.favorites.di.favoritesModule
 import net.moisesborges.ui.station.di.stationActivityModule
@@ -25,6 +26,7 @@ class App : Application() {
     private val locationProvider: LocationProvider by inject()
     private val notificationManager: AudioPlayerNotificationManager by inject()
     private val audioPlayerBroadcastReceiver: AudioPlayerBroadcastReceiver by inject()
+    private val audioPlayerNotificationManager: AudioPlayerNotificationManager by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -33,6 +35,7 @@ class App : Application() {
         locationProvider.init()
         notificationManager.init()
         registerReceivers()
+        audioPlayerNotificationManager.createOrUpdateNotification(Station.EMPTY_STATION.copy(name = "Radio Cidade"), AudioPlayerNotificationManager.PlayerState.PLAYING)
     }
 
     private fun appModules(): List<Module> {

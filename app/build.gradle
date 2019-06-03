@@ -51,7 +51,7 @@ dependencies {
     // KotlinX
     implementation 'androidx.core:core-ktx:1.2.0-alpha01'
 
-    //  Support Library
+    // Support Library
     implementation "androidx.core:core:1.0.2"
     implementation "androidx.media:media:1.0.0"
     implementation "androidx.annotation:annotation:1.0.2"
@@ -63,6 +63,7 @@ dependencies {
 
     // Exoplayer
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:extension-mediasession:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 
     // Koin

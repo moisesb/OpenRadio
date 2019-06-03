@@ -75,7 +75,7 @@ class AudioPlayerViewModel(
             return
         }
         val playerState = if (playbackState.playing) AudioPlayerNotificationManager.PlayerState.PLAYING
-        else AudioPlayerNotificationManager.PlayerState.STOPED
+        else AudioPlayerNotificationManager.PlayerState.STOPPED
         audioPlayerNotificationManager.createOrUpdateNotification(currentStation, playerState)
     }
 }
