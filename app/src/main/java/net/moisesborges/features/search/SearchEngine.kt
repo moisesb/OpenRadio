@@ -2,11 +2,11 @@ package net.moisesborges.features.search
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import net.moisesborges.api.DirbleApi
+import net.moisesborges.api.OpenRadioApi
 import java.util.concurrent.TimeUnit
 
 class SearchEngine(
-    private val api: DirbleApi
+    private val api: OpenRadioApi
 ) {
 
     private val querySubject = PublishSubject.create<String>()

@@ -8,10 +8,10 @@ data class Station(
     val id: Int,
     val name: String,
     val countryCode: String,
-    val image: Image,
-    val thumbnail: Image,
+    val imageUrl: ImageUrl,
+    val thumbnailUrl: ImageUrl,
     val genres: List<Genre>,
-    val stream: Stream?
+    val streamUrl: StreamUrl
 ) : Parcelable {
 
     companion object {
@@ -19,10 +19,10 @@ data class Station(
             0,
             "",
             "",
-            Image(""),
-            Image(""),
+            ImageUrl(""),
+            ImageUrl(""),
             emptyList(),
-            Stream("", 0, "")
+            StreamUrl("")
         )
     }
 }

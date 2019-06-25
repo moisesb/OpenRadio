@@ -5,8 +5,10 @@ import androidx.core.net.toUri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -24,21 +26,24 @@ class AudioPlayer(
         Util.getUserAgent(context, APPLICATION_NAME)
     )
 
+    private var httpDataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory(Util.getUserAgent(context, APPLICATION_NAME))
+
     private val playerListener = object : Player.EventListener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             playbackStateSubject.onNext(PlaybackState(playWhenReady))
         }
     }
 
-    private val mediaSourceFactory = ExtractorMediaSource.Factory(dataSourceFactory)
+    private val extractorMediaSourceFactory = ExtractorMediaSource.Factory(dataSourceFactory)
+    private val hlsMediaSourceFactory = HlsMediaSource.Factory(httpDataSourceFactory)
     private val playbackStateSubject: Subject<PlaybackState> = BehaviorSubject.create()
 
     init {
         playerDelegate.addListener(playerListener)
     }
 
-    fun load(audioUri: String) {
-        playerDelegate.prepare(mediaSourceFactory.createMediaSource(audioUri.toUri()))
+    fun load(streamUri: String) {
+        playerDelegate.prepare(hlsMediaSourceFactory.createMediaSource(streamUri.toUri()))
     }
 
     fun play() {

@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="H,1:1"
-                app:setImage="@{stationViewModel.image}"
+                app:setImage="@{stationViewModel.imageUrl}"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="@dimen/station_image_margin_top"
                 android:layout_marginStart="@dimen/station_image_margin_horizontal"

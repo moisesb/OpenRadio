@@ -6,11 +6,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
 import net.moisesborges.R
-import net.moisesborges.model.Image
+import net.moisesborges.model.ImageUrl
 
 @BindingAdapter("setImage")
-fun setImageBinding(view: ImageView, image: Image?) {
-    val imageUrl = image?.url ?: return
+fun setImageBinding(view: ImageView, imageUrl: ImageUrl?) {
+    val imageUrl = imageUrl?.url ?: return
     if (imageUrl.isNotEmpty()) {
         Picasso.get()
             .load(imageUrl)

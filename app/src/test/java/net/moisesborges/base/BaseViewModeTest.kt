@@ -15,7 +15,9 @@ abstract class BaseViewModeTest : LifecycleOwner {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val lifecycle = LifecycleRegistry(mock())
+    private val lifecycleOwner: LifecycleOwner = mock()
+
+    private val lifecycle = LifecycleRegistry(lifecycleOwner)
 
     @Before fun prepareTests() {
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)

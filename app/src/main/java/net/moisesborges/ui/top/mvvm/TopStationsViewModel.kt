@@ -6,14 +6,14 @@ import androidx.lifecycle.Transformations
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import net.moisesborges.api.DirbleApi
+import net.moisesborges.api.OpenRadioApi
 import net.moisesborges.extensions.get
 import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.Station
 import timber.log.Timber
 
 class TopStationsViewModel(
-    private val dirbleApi: DirbleApi,
+    private val dirbleApi: OpenRadioApi,
     private val paginationLoader: PaginationLoader
 ) {
 
@@ -26,10 +26,8 @@ class TopStationsViewModel(
     val isLoading: LiveData<Boolean> = Transformations.map(state) { it.loading }
 
     init {
-        paginationLoader.loadPage()
-            .subscribe { pageNumber ->
-                loadTopRadios(pageNumber)
-            }
+        // TODO: remove pagination from top stations
+        loadTopRadios(0)
     }
 
     fun clear() {
@@ -38,7 +36,7 @@ class TopStationsViewModel(
 
     private fun loadTopRadios(pageNumber: Int) {
         state.value = state.get().copy(loading = true)
-        disposables += dirbleApi.getPopularStations(pageNumber)
+        disposables += dirbleApi.getHomeContent()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::onStationsLoaded, this::onErrorHappened)
