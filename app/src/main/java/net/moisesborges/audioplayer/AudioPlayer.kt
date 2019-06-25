@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.core.net.toUri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
@@ -21,11 +19,6 @@ class AudioPlayer(
     context: Context
 ) {
 
-    private var dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
-        context,
-        Util.getUserAgent(context, APPLICATION_NAME)
-    )
-
     private var httpDataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory(Util.getUserAgent(context, APPLICATION_NAME))
 
     private val playerListener = object : Player.EventListener {
@@ -34,7 +27,6 @@ class AudioPlayer(
         }
     }
 
-    private val extractorMediaSourceFactory = ExtractorMediaSource.Factory(dataSourceFactory)
     private val hlsMediaSourceFactory = HlsMediaSource.Factory(httpDataSourceFactory)
     private val playbackStateSubject: Subject<PlaybackState> = BehaviorSubject.create()
 
