@@ -4,9 +4,9 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.moisesborges.model.Genre
-import net.moisesborges.model.Image
+import net.moisesborges.model.ImageUrl
 import net.moisesborges.model.Station
-import net.moisesborges.model.Stream
+import net.moisesborges.model.StreamUrl
 import java.util.Date
 
 class StationsRepository(private val stationDao: StationDao) {
@@ -47,29 +47,25 @@ class StationsRepository(private val stationDao: StationDao) {
             station.id,
             station.name,
             station.countryCode,
-            station.image.url ?: "",
-            station.thumbnail.url ?: "",
+            station.imageUrl.url,
+            station.thumbnailUrl.url,
             station.genres.map { genre -> GenreEntity(genre.id, genre.title) },
-            station.stream?.streamUrl,
-            station.stream?.contentType,
-            station.stream?.bitrate,
+            station.streamUrl.url,
             null
         )
     }
 
     private fun entityToStation(stationEntity: StationEntity): Station {
         val streamUrl = stationEntity.streamUrl
-        val stream = if (streamUrl != null) Stream(
-            streamUrl,
-            stationEntity.streamBitrate,
-            stationEntity.streamContentType ?: ""
-        ) else null
+        val stream = StreamUrl(
+            streamUrl
+        )
         return Station(
             stationEntity.id,
             stationEntity.name,
             stationEntity.countryCode,
-            Image(stationEntity.imageUrl),
-            Image(stationEntity.thumbnailUrl),
+            ImageUrl(stationEntity.imageUrl),
+            ImageUrl(stationEntity.thumbnailUrl),
             stationEntity.genres.map { genreEntity -> Genre(genreEntity.id, genreEntity.name) },
             stream
         )

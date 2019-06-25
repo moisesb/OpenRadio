@@ -10,9 +10,8 @@ import io.reactivex.subjects.BehaviorSubject
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.base.BaseViewModeTest
-import net.moisesborges.extensions.get
 import net.moisesborges.model.Station
-import net.moisesborges.model.Stream
+import net.moisesborges.model.StreamUrl
 import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
@@ -86,7 +85,7 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
 
     private fun givenNextStation(expectedStreamUrl: String): Station {
         return mock {
-            on { stream } doReturn Stream(expectedStreamUrl, 128, "audio/mp3")
+            on { streamUrl } doReturn StreamUrl(expectedStreamUrl)
         }
     }
 }

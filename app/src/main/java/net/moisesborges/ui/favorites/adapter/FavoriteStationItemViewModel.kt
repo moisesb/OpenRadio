@@ -10,7 +10,7 @@ class FavoriteStationItemViewModel(
 
     val title = station.name
     val description = station.countryCode
-    val image = station.image
+    val image = station.imageUrl
 
     fun itemSelected() {
         navigator.navigateToAudioPlayer(station)

@@ -62,6 +62,7 @@ dependencies {
 
     // Exoplayer
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

@@ -15,7 +15,7 @@ class TopStationItemViewModel(
 
     val title = station.name
     val description = station.countryCode
-    val image = station.image
+    val image = station.imageUrl
     val isFavorite = MutableLiveData<Boolean>().apply {
         this.value = false
     }

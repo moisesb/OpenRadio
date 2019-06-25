@@ -3,7 +3,7 @@ package net.moisesborges.ui.station.mvvm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import net.moisesborges.model.Image
+import net.moisesborges.model.ImageUrl
 import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
 
@@ -17,7 +17,7 @@ class StationViewModel(
     }
 
     val title: LiveData<String> = Transformations.map(state) { state -> state.station.name }
-    val image: LiveData<Image> = Transformations.map(state) { state -> state.station.image }
+    val imageUrl: LiveData<ImageUrl> = Transformations.map(state) { state -> state.station.imageUrl }
 
     fun closeSelected() {
         navigator.navigateBack()

@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Image(val url: String?) : Parcelable
+data class StreamUrl(val url: String) : Parcelable

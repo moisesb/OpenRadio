@@ -15,12 +15,10 @@ data class StationEntity(
     var imageUrl: String,
     var thumbnailUrl: String,
     @Ignore var genres: List<GenreEntity>,
-    var streamUrl: String?,
-    var streamContentType: String?,
-    var streamBitrate: Int?,
+    var streamUrl: String,
     @ColumnInfo(name = "created_at")
     var createdAt: Date?
 ) {
 
-    constructor() : this(-1, "", "", "", "", emptyList(), null, null, null, null)
+    constructor() : this(-1, "", "", "", "", emptyList(), "", null)
 }
