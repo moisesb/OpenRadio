@@ -1,5 +1,6 @@
 package net.moisesborges.audioplayer
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -7,9 +8,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import net.moisesborges.R
@@ -21,7 +22,7 @@ import timber.log.Timber
 import androidx.media.app.NotificationCompat as MediaNotificationCompat
 
 private const val CHANNEL_ID = "audioControlsNotification"
-private const val NOTIFICATION_ID = 1
+const val NOTIFICATION_ID = 1
 
 // TODO: Prevent user from dismiss the notification if still playing
 class AudioPlayerNotificationManager(
@@ -56,7 +57,7 @@ class AudioPlayerNotificationManager(
 
         disposable.dispose()
 
-        disposable = bitmapFactory.decode(currentPlayingStation.thumbnail.url)
+        disposable = bitmapFactory.decode(currentPlayingStation.imageUrl.url)
             .observeOn(rxSchedulers.io())
             .subscribeOn(rxSchedulers.mainThread())
             .subscribe({ thumbnail ->
@@ -66,7 +67,7 @@ class AudioPlayerNotificationManager(
             })
     }
 
-    private fun createOrUpdateNotification(currentPlayingStation: Station, thumbnail: Bitmap?, playerState: PlayerState) {
+    fun createOrUpdateNotification(currentPlayingStation: Station, thumbnail: Bitmap?, playerState: PlayerState) : Notification {
         val stationActivityIntent = createStationActivityIntent(currentPlayingStation, context)
 
         val stationActivityPendingIntent = PendingIntent.getActivity(context, 0, stationActivityIntent, 0)
@@ -83,13 +84,12 @@ class AudioPlayerNotificationManager(
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setLargeIcon(thumbnail)
+            .setOnlyAlertOnce(true)
             .setContentTitle(currentPlayingStation.name)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setDeleteIntent(stopPendingIntent)
             .setStyle(style)
             .setContentIntent(stationActivityPendingIntent)
-            .setAutoCancel(false)
-            .setOngoing(true)
 
         val playStopPendingIntent = createPlayStopPendingIntent(context)
 
@@ -102,8 +102,10 @@ class AudioPlayerNotificationManager(
             }
         }
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(NOTIFICATION_ID, builder.build())
-        }
+        return builder.build()
+
+//        with(NotificationManagerCompat.from(context)) {
+//            notify(NOTIFICATION_ID, builder.build())
+//        }
     }
 }

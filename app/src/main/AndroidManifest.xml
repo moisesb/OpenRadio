@@ -34,6 +34,12 @@
                 android:name=".ui.station.StationActivity"
                 android:launchMode="singleTop">
         </activity>
+
+        <service android:name=".audioplayer.AudioPlayer">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

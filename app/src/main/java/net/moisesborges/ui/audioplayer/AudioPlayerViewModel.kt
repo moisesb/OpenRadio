@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import io.reactivex.disposables.CompositeDisposable
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.AudioPlayerNotificationManager
+import net.moisesborges.audioplayer.NOTIFICATION_ID
 import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.extensions.get
 import net.moisesborges.extensions.plusAssign
@@ -76,6 +77,7 @@ class AudioPlayerViewModel(
         }
         val playerState = if (playbackState.playing) AudioPlayerNotificationManager.PlayerState.PLAYING
         else AudioPlayerNotificationManager.PlayerState.STOPPED
-        audioPlayerNotificationManager.createOrUpdateNotification(currentStation, playerState)
+        //startForeground(NOTIFICATION_ID, audioPlayerNotificationManager.createOrUpdateNotification(currentStation, null, playerState))
+        //audioPlayerNotificationManager.createOrUpdateNotification(currentStation, playerState)
     }
 }

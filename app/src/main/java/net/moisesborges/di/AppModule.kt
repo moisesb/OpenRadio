@@ -23,8 +23,12 @@ val appModule = { context: Context ->
         single { Navigator(get()) }
         single<ExoPlayer> { ExoPlayerFactory.newSimpleInstance(get()) }
         single { MediaSessionConnector(get()) }
-        single { MediaSessionCompat(context, MEDIA_SESSION_TAG) }
-        single { AudioPlayer(get(), get(), get()) }
+        single {
+            MediaSessionCompat(context, MEDIA_SESSION_TAG).apply {
+                setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
+            }
+        }
+        single { AudioPlayer() }
         single { RxSchedulers() }
         single { BitmapFactory() }
         single { AudioPlayerNotificationManager(get(), get(), get(), get()) }

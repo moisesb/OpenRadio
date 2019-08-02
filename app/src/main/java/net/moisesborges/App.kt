@@ -35,7 +35,6 @@ class App : Application() {
         locationProvider.init()
         notificationManager.init()
         registerReceivers()
-        audioPlayerNotificationManager.createOrUpdateNotification(Station.EMPTY_STATION.copy(name = "Radio Cidade"), AudioPlayerNotificationManager.PlayerState.PLAYING)
     }
 
     private fun appModules(): List<Module> {
