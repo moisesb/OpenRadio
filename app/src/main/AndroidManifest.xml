@@ -3,6 +3,7 @@
           package="net.moisesborges">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
             android:name=".App"
@@ -35,7 +36,7 @@
                 android:launchMode="singleTop">
         </activity>
 
-        <service android:name=".audioplayer.AudioPlayer">
+        <service android:name=".audioplayer.AudioPlayerService">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>

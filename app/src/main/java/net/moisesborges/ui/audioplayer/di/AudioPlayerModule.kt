@@ -4,5 +4,5 @@ import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import org.koin.dsl.module.module
 
 val audioPlayerModule = module {
-    single { AudioPlayerViewModel(get(), get()) }
+    single { AudioPlayerViewModel(get()) }
 }

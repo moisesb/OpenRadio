@@ -2,13 +2,10 @@ package net.moisesborges
 
 import android.app.Application
 import net.moisesborges.api.di.apiModule
-import net.moisesborges.audioplayer.AudioPlayerBroadcastReceiver
-import net.moisesborges.audioplayer.AudioPlayerNotificationManager
 import net.moisesborges.db.di.databaseModule
 import net.moisesborges.di.appModule
 import net.moisesborges.features.di.featuresModule
 import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.model.Station
 import net.moisesborges.ui.audioplayer.di.audioPlayerModule
 import net.moisesborges.ui.favorites.di.favoritesModule
 import net.moisesborges.ui.station.di.stationActivityModule
@@ -24,17 +21,12 @@ import timber.log.Timber
 class App : Application() {
 
     private val locationProvider: LocationProvider by inject()
-    private val notificationManager: AudioPlayerNotificationManager by inject()
-    private val audioPlayerBroadcastReceiver: AudioPlayerBroadcastReceiver by inject()
-    private val audioPlayerNotificationManager: AudioPlayerNotificationManager by inject()
 
     override fun onCreate() {
         super.onCreate()
         startKoin(this, appModules())
         setupTimber()
         locationProvider.init()
-        notificationManager.init()
-        registerReceivers()
     }
 
     private fun appModules(): List<Module> {
@@ -60,9 +52,5 @@ class App : Application() {
                 }
             })
         }
-    }
-
-    private fun registerReceivers() {
-        audioPlayerBroadcastReceiver.register(this)
     }
 }

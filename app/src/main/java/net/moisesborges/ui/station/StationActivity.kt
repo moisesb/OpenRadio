@@ -15,7 +15,9 @@ import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 private const val STATION_ARG = "StationActivity.station"
+private const val STATION_ID_ARG = "StationActivity.stationId"
 
+// TODO: fetch station details if only stationId is provided
 class StationActivity : LifecycleActivity() {
 
     private lateinit var binding: ActivityStationBinding
@@ -43,4 +45,9 @@ class StationActivity : LifecycleActivity() {
 fun createStationActivityIntent(station: Station, context: Context) =
     Intent(context, StationActivity::class.java).apply {
         putExtra(STATION_ARG, station)
+    }
+
+fun createStationActivityIntent(stationId: Int, context: Context) =
+    Intent(context, StationActivity::class.java).apply {
+        putExtra(STATION_ID_ARG, stationId)
     }

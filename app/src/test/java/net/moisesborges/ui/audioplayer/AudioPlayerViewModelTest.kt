@@ -37,8 +37,7 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
         testSubject.playPause()
 
         val inOrder = inOrder(audioPlayer)
-        inOrder.verify(audioPlayer).load(expectedStreamUrl)
-        inOrder.verify(audioPlayer).play()
+        inOrder.verify(audioPlayer).load(nextStation)
     }
 
     @Test fun `given prepareNextStation and clear, when playPause, then it should not load and play next station`() {
@@ -49,7 +48,7 @@ class AudioPlayerViewModelTest : BaseViewModeTest() {
 
         testSubject.playPause()
 
-        verify(audioPlayer, never()).load(expectedStreamUrl)
+        verify(audioPlayer, never()).load(nextStation)
     }
 
     @Test fun `given prepareNextStation was not called and audioPlayer is playing, when playPause, then it should pause`() {
