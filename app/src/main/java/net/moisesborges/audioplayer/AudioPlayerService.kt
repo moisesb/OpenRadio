@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -24,21 +25,22 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
+import kotlinx.android.parcel.Parcelize
 import net.moisesborges.R
 import net.moisesborges.extensions.plusAssign
 import net.moisesborges.ui.station.createStationActivityIntent
 import net.moisesborges.utils.BitmapFactory
 import net.moisesborges.utils.RxSchedulers
 import org.koin.android.ext.android.inject
-import timber.log.Timber
+import java.lang.IllegalArgumentException
 
 private const val APPLICATION_NAME = "Open Radio"
 private const val MEDIA_ROOT = "MY_MEDIA_ROOT"
 private const val MEDIA_SESSION_TAG = "net.moisesborges.mediasession.tag"
 private const val NOTIFICATION_CHANNEL_ID = "audioControlsNotification"
 private const val NOTIFICATION_ID = 1
+private const val EVENT_PARAM_ARG = "AudioPlayerService.event"
 
-// TODO: explicitly create stop state and force call load again after service is destroyed
 class AudioPlayerService : MediaBrowserServiceCompat() {
 
     private val playerDelegate: ExoPlayer by inject()
@@ -104,24 +106,9 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     init {
         playerDelegate.addListener(playerListener)
-        disposables += audioPlayerServiceBinder.events()
-            .subscribe { event ->
-                when (event) {
-                    is Event.LoadStation -> {
-                        load(event)
-                    }
-                    is Event.Play -> {
-                        play()
-                    }
-                    is Event.Stop -> {
-                        stop()
-                    }
-                }
-            }
     }
 
     override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
-        Timber.d("parent $parentId, result: $result")
         if (playerDelegate.playWhenReady) {
             val mediaMetadata = MediaMetadataCompat.Builder()
                 .build()
@@ -133,14 +120,12 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
 
     override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot? {
-        Timber.d("client $clientPackageName, uuid $clientUid, hints: $rootHints")
         val extras = Bundle()
         return BrowserRoot(MEDIA_ROOT, extras)
     }
 
     override fun onCreate() {
         super.onCreate()
-        Timber.d("on create player instance $playerDelegate")
         mediaSessionConnector.setPlayer(playerDelegate, null)
         sessionToken = mediaSessionConnector.mediaSession.sessionToken
         playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
@@ -156,7 +141,6 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
         }
         playerNotificationManager.setNotificationListener(object : PlayerNotificationManager.NotificationListener {
             override fun onNotificationCancelled(notificationId: Int) {
-                playbackState = playbackState.copy(isPlaying = false)
                 stopSelf()
             }
 
@@ -169,7 +153,8 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
 
     override fun onDestroy() {
-        Timber.d("on destroy player instance $playerDelegate")
+        playbackState = playbackState.copy(isPlaying = false, stationInfo = null)
+        currentStationImage = null
         mediaSession.release()
         mediaSessionConnector.setPlayer(null, null)
         playerDelegate.release()
@@ -179,11 +164,22 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (val event: Parcelable? = intent?.extras?.getParcelable(EVENT_PARAM_ARG)) {
+            is Event.LoadStation -> {
+                load(event)
+            }
+            is Event.Play -> {
+                play()
+            }
+            is Event.Stop -> {
+                stop()
+            }
+            else -> throw IllegalStateException("Intent must include the AudioPlayerService.Event")
+        }
         return Service.START_STICKY
     }
 
     private fun load(loadEvent: Event.LoadStation) {
-        Timber.d("load player instance $playerDelegate")
         loadStationImage(loadEvent.imageUrl)
         playbackState = PlaybackState(false, StationInfo(loadEvent.id, loadEvent.name, loadEvent.imageUrl))
         playerDelegate.prepare(hlsMediaSourceFactory.createMediaSource(loadEvent.streamUri.toUri()))
@@ -201,7 +197,6 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
 
     private fun play() {
-        Timber.d("play player instance $playerDelegate")
         playerDelegate.playWhenReady = true
     }
 
@@ -211,16 +206,7 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     class AudioPlayerServiceBinder {
 
-        private val eventSubject: Subject<Event> = BehaviorSubject.create()
         private val playbackStateSubject: Subject<PlaybackState> = BehaviorSubject.create()
-
-        fun sendEvent(event: Event) {
-            eventSubject.onNext(event)
-        }
-
-        fun events(): Observable<Event> {
-            return eventSubject
-        }
 
         fun playbackState(): Observable<PlaybackState> {
             return playbackStateSubject.distinctUntilChanged()
@@ -233,22 +219,31 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     sealed class Event {
 
+        @Parcelize
         data class LoadStation(
             val id: Int,
             val name: String,
             val imageUrl: String?,
             val streamUri: String
-        ) : Event()
+        ) : Event(), Parcelable
 
-        object Play : Event()
+        @Parcelize
+        object Play : Event(), Parcelable
 
-        object Stop : Event()
+        @Parcelize
+        object Stop : Event(), Parcelable
     }
 
     class Launcher(private val context: Context) {
 
-        fun launch() {
-            val audioPlayerServiceIntent = Intent(context, AudioPlayerService::class.java)
+        fun launch(event: Event) {
+            val audioPlayerServiceIntent = Intent(context, AudioPlayerService::class.java).apply {
+                if (event is Parcelable) {
+                    putExtra(EVENT_PARAM_ARG, event)
+                } else {
+                    throw IllegalArgumentException("$event must implement Parcelable interface")
+                }
+            }
             Util.startForegroundService(context, audioPlayerServiceIntent)
         }
     }

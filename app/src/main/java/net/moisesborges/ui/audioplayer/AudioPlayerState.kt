@@ -9,4 +9,4 @@ data class AudioPlayerState(
     val playbackState: PlaybackState
 )
 
-fun initialAudioPlayerState() = AudioPlayerState(null, Station.EMPTY_STATION, PlaybackState(false))
+fun initialAudioPlayerState() = AudioPlayerState(null, Station.EMPTY_STATION, PlaybackState(isPlaying = false, isLoaded = false))

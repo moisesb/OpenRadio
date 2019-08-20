@@ -8,4 +8,4 @@ data class StationState(
     val playbackState: PlaybackState
 )
 
-fun initialStationState(station: Station) = StationState(station, PlaybackState(false))
+fun initialStationState(station: Station) = StationState(station, PlaybackState(isPlaying = false, isLoaded = false))

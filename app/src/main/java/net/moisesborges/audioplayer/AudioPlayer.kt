@@ -11,7 +11,7 @@ class AudioPlayer(
     private val audioServiceLauncher: Launcher
 ) {
 
-    private var state: AudioPlayerState = AudioPlayerState(false)
+    private var state: AudioPlayerState = AudioPlayerState(isPlaying = false)
 
     init {
         audioPlayerServiceBinder.playbackState()
@@ -21,23 +21,21 @@ class AudioPlayer(
     }
 
     fun load(station: Station) {
-        audioPlayerServiceBinder.sendEvent(Event.LoadStation(station.id, station.name, station.imageUrl.url, station.streamUrl.url))
-        audioServiceLauncher.launch()
+        audioServiceLauncher.launch(Event.LoadStation(station.id, station.name, station.imageUrl.url, station.streamUrl.url))
     }
 
     fun play() {
-        audioPlayerServiceBinder.sendEvent(Event.Play)
-        audioServiceLauncher.launch()
+        audioServiceLauncher.launch(Event.Play)
     }
 
     fun pause() {
-        audioPlayerServiceBinder.sendEvent(Event.Stop)
+        audioServiceLauncher.launch(Event.Stop)
     }
 
     fun isPlaying() = state.isPlaying
 
     fun playbackState(): Observable<PlaybackState> = audioPlayerServiceBinder.playbackState()
-        .map { PlaybackState(it.isPlaying) }
+        .map { PlaybackState(isPlaying = it.isPlaying, isLoaded = it.stationInfo != null) }
 }
 
 private data class AudioPlayerState(val isPlaying: Boolean)

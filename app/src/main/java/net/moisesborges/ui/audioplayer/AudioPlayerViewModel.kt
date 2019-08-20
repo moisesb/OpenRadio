@@ -27,7 +27,12 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
     init {
         disposables += audioPlayer.playbackState()
             .subscribe { playbackState ->
-                state.value = state.get().copy(playbackState = playbackState)
+                var newState = state.get().copy(playbackState = playbackState)
+                if (!playbackState.isLoaded) {
+                    newState = newState.copy(nextStation = newState.currentStation, currentStation = Station.EMPTY_STATION)
+                }
+
+                state.value = newState
             }
     }
 
