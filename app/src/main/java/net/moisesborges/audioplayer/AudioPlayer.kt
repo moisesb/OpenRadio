@@ -1,53 +1,41 @@
 package net.moisesborges.audioplayer
 
-import android.content.Context
-import androidx.core.net.toUri
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
-
-private const val APPLICATION_NAME = "Open Radio"
+import net.moisesborges.audioplayer.AudioPlayerService.Launcher
+import net.moisesborges.audioplayer.AudioPlayerService.Event
+import net.moisesborges.audioplayer.AudioPlayerService.AudioPlayerServiceBinder
+import net.moisesborges.model.Station
 
 class AudioPlayer(
-    private val playerDelegate: ExoPlayer,
-    context: Context
+    private val audioPlayerServiceBinder: AudioPlayerServiceBinder,
+    private val audioServiceLauncher: Launcher
 ) {
 
-    private var httpDataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory(Util.getUserAgent(context, APPLICATION_NAME))
-
-    private val playerListener = object : Player.EventListener {
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            playbackStateSubject.onNext(PlaybackState(playWhenReady))
-        }
-    }
-
-    private val hlsMediaSourceFactory = HlsMediaSource.Factory(httpDataSourceFactory)
-    private val playbackStateSubject: Subject<PlaybackState> = BehaviorSubject.create()
+    private var state: AudioPlayerState = AudioPlayerState(isPlaying = false)
 
     init {
-        playerDelegate.addListener(playerListener)
+        audioPlayerServiceBinder.playbackState()
+            .subscribe { playbackState ->
+                state = state.copy(isPlaying = playbackState.isPlaying)
+            }
     }
 
-    fun load(streamUri: String) {
-        playerDelegate.prepare(hlsMediaSourceFactory.createMediaSource(streamUri.toUri()))
+    fun load(station: Station) {
+        audioServiceLauncher.launch(Event.LoadStation(station.id, station.name, station.imageUrl.url, station.streamUrl.url))
     }
 
     fun play() {
-        playerDelegate.playWhenReady = true
+        audioServiceLauncher.launch(Event.Play)
     }
 
     fun pause() {
-        playerDelegate.playWhenReady = false
+        audioServiceLauncher.launch(Event.Stop)
     }
 
-    fun isPlaying() = playerDelegate.playWhenReady
+    fun isPlaying() = state.isPlaying
 
-    fun playbackState(): Observable<PlaybackState> =
-        playbackStateSubject.distinctUntilChanged()
+    fun playbackState(): Observable<PlaybackState> = audioPlayerServiceBinder.playbackState()
+        .map { PlaybackState(isPlaying = it.isPlaying, isLoaded = it.stationInfo != null) }
 }
+
+private data class AudioPlayerState(val isPlaying: Boolean)

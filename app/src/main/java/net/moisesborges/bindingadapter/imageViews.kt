@@ -10,10 +10,10 @@ import net.moisesborges.model.ImageUrl
 
 @BindingAdapter("setImage")
 fun setImageBinding(view: ImageView, imageUrl: ImageUrl?) {
-    val imageUrl = imageUrl?.url ?: return
-    if (imageUrl.isNotEmpty()) {
+    val url = imageUrl?.url ?: return
+    if (url.isNotEmpty()) {
         Picasso.get()
-            .load(imageUrl)
+            .load(url)
             .into(view)
     }
 }

@@ -25,8 +25,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin(this, appModules())
-        locationProvider.init()
         setupTimber()
+        locationProvider.init()
     }
 
     private fun appModules(): List<Module> {

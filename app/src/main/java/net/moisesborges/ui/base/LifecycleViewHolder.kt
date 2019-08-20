@@ -11,8 +11,8 @@ abstract class LifecycleViewHolder(binding: ViewDataBinding) : RecyclerView.View
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     init {
-        lifecycleRegistry.markState(Lifecycle.State.INITIALIZED)
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
+        lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
         binding.lifecycleOwner = this
     }
 

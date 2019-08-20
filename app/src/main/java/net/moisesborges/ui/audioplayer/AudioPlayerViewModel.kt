@@ -19,7 +19,7 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
 
     val title: LiveData<String> = Transformations.map(state) { state -> state.currentStation.name }
     val imageUrl: LiveData<ImageUrl> = Transformations.map(state) { state -> state.currentStation.imageUrl }
-    val isPlaying: LiveData<Boolean> = Transformations.map(state) { state -> state.playbackState.playing }
+    val isPlaying: LiveData<Boolean> = Transformations.map(state) { state -> state.playbackState.isPlaying }
     val isEmpty: LiveData<Boolean> = Transformations.map(state) { state ->
         state.currentStation == Station.EMPTY_STATION
     }
@@ -27,7 +27,12 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
     init {
         disposables += audioPlayer.playbackState()
             .subscribe { playbackState ->
-                state.value = state.get().copy(playbackState = playbackState)
+                var newState = state.get().copy(playbackState = playbackState)
+                if (!playbackState.isLoaded) {
+                    newState = newState.copy(nextStation = newState.currentStation, currentStation = Station.EMPTY_STATION)
+                }
+
+                state.value = newState
             }
     }
 
@@ -49,10 +54,8 @@ class AudioPlayerViewModel(private val audioPlayer: AudioPlayer) {
     }
 
     private fun playNextStation(nextStation: Station) {
-        val stream = nextStation.streamUrl
-            audioPlayer.load(stream.url)
-            audioPlayer.play()
-            state.value = state.get().copy(currentStation = nextStation, nextStation = null)
+        audioPlayer.load(nextStation)
+        state.value = state.get().copy(currentStation = nextStation, nextStation = null)
     }
 
     private fun togglePlayPause() {
