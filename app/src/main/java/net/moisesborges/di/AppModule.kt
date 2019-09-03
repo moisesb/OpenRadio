@@ -5,6 +5,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ExoPlayerFactory
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.AudioPlayerService
+import net.moisesborges.audioplayer.MediaSourceFactory
 import net.moisesborges.ui.navigation.ActivityProvider
 import net.moisesborges.ui.navigation.Navigator
 import net.moisesborges.utils.BitmapFactory
@@ -17,6 +18,7 @@ val appModule = { context: Context ->
         single { ActivityProvider() }
         single { Navigator(get()) }
         factory<ExoPlayer> { ExoPlayerFactory.newSimpleInstance(get()) }
+        single { MediaSourceFactory(get()) }
         single { AudioPlayerService.Launcher(get()) }
         single { AudioPlayer(get(), get()) }
         single { AudioPlayerService.AudioPlayerServiceBinder() }
