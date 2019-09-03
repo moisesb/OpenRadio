@@ -11,15 +11,11 @@ import android.os.Parcelable
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import androidx.core.net.toUri
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -34,7 +30,6 @@ import net.moisesborges.utils.RxSchedulers
 import org.koin.android.ext.android.inject
 import java.lang.IllegalArgumentException
 
-private const val APPLICATION_NAME = "Open Radio"
 private const val MEDIA_ROOT = "MY_MEDIA_ROOT"
 private const val MEDIA_SESSION_TAG = "net.moisesborges.mediasession.tag"
 private const val NOTIFICATION_CHANNEL_ID = "audioControlsNotification"
@@ -47,6 +42,7 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     private val context: Context by inject()
     private val audioPlayerServiceBinder: AudioPlayerServiceBinder by inject()
     private val bitmapFactory: BitmapFactory by inject()
+    private val mediaSourceFactory: MediaSourceFactory by inject()
     private val rxSchedulers: RxSchedulers by inject()
 
     private val disposables = CompositeDisposable()
@@ -58,16 +54,11 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
     private var currentStationImage: Bitmap? = null
 
-    private var httpDataSourceFactory: DataSource.Factory =
-        DefaultHttpDataSourceFactory(Util.getUserAgent(context, APPLICATION_NAME))
-
     private val playerListener = object : Player.EventListener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             this@AudioPlayerService.playbackState = this@AudioPlayerService.playbackState.copy(isPlaying = playWhenReady)
         }
     }
-
-    private val hlsMediaSourceFactory = HlsMediaSource.Factory(httpDataSourceFactory)
 
     private val mediaSession: MediaSessionCompat by lazy {
         MediaSessionCompat(context, MEDIA_SESSION_TAG).apply {
@@ -104,6 +95,16 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     private lateinit var playerNotificationManager: PlayerNotificationManager
 
+    private val notificationListener = object : PlayerNotificationManager.NotificationListener {
+        override fun onNotificationCancelled(notificationId: Int) {
+            stopSelf()
+        }
+
+        override fun onNotificationStarted(notificationId: Int, notification: Notification?) {
+            startForeground(notificationId, notification)
+        }
+    }
+
     init {
         playerDelegate.addListener(playerListener)
     }
@@ -126,28 +127,22 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     override fun onCreate() {
         super.onCreate()
-        mediaSessionConnector.setPlayer(playerDelegate, null)
+        mediaSessionConnector.setPlayer(playerDelegate)
         sessionToken = mediaSessionConnector.mediaSession.sessionToken
         playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
             context,
             NOTIFICATION_CHANNEL_ID,
             R.string.audio_channel_name,
+            R.string.audio_channel_description,
             NOTIFICATION_ID,
-            mediaDescriptionAdapter
+            mediaDescriptionAdapter,
+            notificationListener
         ).apply {
             setUseNavigationActions(false)
             setRewindIncrementMs(0)
             setFastForwardIncrementMs(0)
+            setUseStopAction(true)
         }
-        playerNotificationManager.setNotificationListener(object : PlayerNotificationManager.NotificationListener {
-            override fun onNotificationCancelled(notificationId: Int) {
-                stopSelf()
-            }
-
-            override fun onNotificationStarted(notificationId: Int, notification: Notification?) {
-                startForeground(notificationId, notification)
-            }
-        })
         playerNotificationManager.setPlayer(playerDelegate)
         playerNotificationManager.setMediaSessionToken(mediaSession.sessionToken)
     }
@@ -156,7 +151,7 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
         playbackState = playbackState.copy(isPlaying = false, stationInfo = null)
         currentStationImage = null
         mediaSession.release()
-        mediaSessionConnector.setPlayer(null, null)
+        mediaSessionConnector.setPlayer(null)
         playerDelegate.release()
         disposables.clear()
 
@@ -182,7 +177,8 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     private fun load(loadEvent: Event.LoadStation) {
         loadStationImage(loadEvent.imageUrl)
         playbackState = PlaybackState(false, StationInfo(loadEvent.id, loadEvent.name, loadEvent.imageUrl))
-        playerDelegate.prepare(hlsMediaSourceFactory.createMediaSource(loadEvent.streamUri.toUri()))
+        val mediaSource = mediaSourceFactory.buildMediaSource(loadEvent.streamUri)
+        playerDelegate.prepare(mediaSource)
         play()
     }
 
