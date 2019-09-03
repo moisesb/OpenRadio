@@ -5,9 +5,7 @@ import io.reactivex.subjects.PublishSubject
 import net.moisesborges.api.OpenRadioApi
 import java.util.concurrent.TimeUnit
 
-class SearchEngine(
-    private val api: OpenRadioApi
-) {
+class SearchEngine(private val api: OpenRadioApi) {
 
     private val querySubject = PublishSubject.create<String>()
 
@@ -18,7 +16,7 @@ class SearchEngine(
     fun searchResult(): Observable<SearchResult> {
         return querySubject.debounce(300, TimeUnit.MILLISECONDS)
             .flatMap { searchQuery ->
-                api.searchStations(searchQuery, "")
+                api.searchStations(searchQuery)
                     .map { stations -> SearchResult(false, stations) }
                     .toObservable()
             }
