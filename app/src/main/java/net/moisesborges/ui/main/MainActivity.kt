@@ -48,6 +48,11 @@ class MainActivity : LifecycleActivity() {
         setSupportActionBar(binding.toolbar)
     }
 
+    override fun onDestroy() {
+        audioPlayerViewModel.clear()
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_top_menu, menu)
         return true

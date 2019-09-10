@@ -1,3 +1,7 @@
 package net.moisesborges.audioplayer
 
-data class PlaybackState(val isPlaying: Boolean, val isLoaded: Boolean)
+import net.moisesborges.model.Station
+
+data class PlaybackState(val station: Station, val isPlaying: Boolean)
+
+fun initialPlaybackState() = PlaybackState(Station.EMPTY_STATION, false)

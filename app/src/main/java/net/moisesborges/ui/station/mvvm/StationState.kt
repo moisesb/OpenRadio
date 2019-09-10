@@ -2,10 +2,17 @@ package net.moisesborges.ui.station.mvvm
 
 import net.moisesborges.model.Station
 import net.moisesborges.audioplayer.PlaybackState
+import net.moisesborges.audioplayer.initialPlaybackState
 
 data class StationState(
     val station: Station,
-    val playbackState: PlaybackState
+    val playbackState: PlaybackState,
+    val isLoadingStation: Boolean,
+    val error: Error?
 )
 
-fun initialStationState(station: Station) = StationState(station, PlaybackState(isPlaying = false, isLoaded = false))
+sealed class Error {
+    object StationNotLoadedError : Error()
+}
+
+fun initialStationState() = StationState(Station.EMPTY_STATION, initialPlaybackState(), false, null)

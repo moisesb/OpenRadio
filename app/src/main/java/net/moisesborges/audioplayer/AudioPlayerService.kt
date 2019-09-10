@@ -24,6 +24,7 @@ import io.reactivex.subjects.Subject
 import kotlinx.android.parcel.Parcelize
 import net.moisesborges.R
 import net.moisesborges.extensions.plusAssign
+import net.moisesborges.model.Station
 import net.moisesborges.ui.station.createStationActivityIntent
 import net.moisesborges.utils.BitmapFactory
 import net.moisesborges.utils.RxSchedulers
@@ -48,15 +49,16 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     private val disposables = CompositeDisposable()
 
     private var playbackState: PlaybackState = PlaybackState(false, null)
-    set(value) {
-        field = value
-        audioPlayerServiceBinder.updatePlaybackState(value)
-    }
+        set(value) {
+            field = value
+            audioPlayerServiceBinder.updatePlaybackState(value)
+        }
     private var currentStationImage: Bitmap? = null
 
     private val playerListener = object : Player.EventListener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            this@AudioPlayerService.playbackState = this@AudioPlayerService.playbackState.copy(isPlaying = playWhenReady)
+            this@AudioPlayerService.playbackState =
+                this@AudioPlayerService.playbackState.copy(isPlaying = playWhenReady)
         }
     }
 
@@ -70,28 +72,29 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
         MediaSessionConnector(mediaSession)
     }
 
-    private val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
-        override fun createCurrentContentIntent(player: Player): PendingIntent? {
-            val stationInfo = playbackState.stationInfo ?: return null
-            val stationActivityIntent = createStationActivityIntent(stationInfo.stationId, context)
-            return PendingIntent.getActivity(context, 0, stationActivityIntent, 0)
-        }
+    private val mediaDescriptionAdapter =
+        object : PlayerNotificationManager.MediaDescriptionAdapter {
+            override fun createCurrentContentIntent(player: Player): PendingIntent? {
+                val station = playbackState.station ?: return null
+                val stationActivityIntent = createStationActivityIntent(station.id, context)
+                return PendingIntent.getActivity(context, 0, stationActivityIntent, 0)
+            }
 
-        override fun getCurrentContentText(player: Player): String? {
-            return null
-        }
+            override fun getCurrentContentText(player: Player): String? {
+                return null
+            }
 
-        override fun getCurrentContentTitle(player: Player): String {
-            return playbackState.stationInfo?.name ?: ""
-        }
+            override fun getCurrentContentTitle(player: Player): String {
+                return playbackState.station?.name ?: ""
+            }
 
-        override fun getCurrentLargeIcon(
-            player: Player,
-            callback: PlayerNotificationManager.BitmapCallback
-        ): Bitmap? {
-            return currentStationImage
+            override fun getCurrentLargeIcon(
+                player: Player,
+                callback: PlayerNotificationManager.BitmapCallback
+            ): Bitmap? {
+                return currentStationImage
+            }
         }
-    }
 
     private lateinit var playerNotificationManager: PlayerNotificationManager
 
@@ -109,18 +112,32 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
         playerDelegate.addListener(playerListener)
     }
 
-    override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
+    override fun onLoadChildren(
+        parentId: String,
+        result: Result<MutableList<MediaBrowserCompat.MediaItem>>
+    ) {
         if (playerDelegate.playWhenReady) {
             val mediaMetadata = MediaMetadataCompat.Builder()
                 .build()
-            result.sendResult(mutableListOf(MediaBrowserCompat.MediaItem(mediaMetadata.description, 0)))
+            result.sendResult(
+                mutableListOf(
+                    MediaBrowserCompat.MediaItem(
+                        mediaMetadata.description,
+                        0
+                    )
+                )
+            )
         } else {
             mediaSessionConnector.mediaSession.sendSessionEvent("NetworkFailed", null)
             result.sendResult(null)
         }
     }
 
-    override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot? {
+    override fun onGetRoot(
+        clientPackageName: String,
+        clientUid: Int,
+        rootHints: Bundle?
+    ): BrowserRoot? {
         val extras = Bundle()
         return BrowserRoot(MEDIA_ROOT, extras)
     }
@@ -148,7 +165,7 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     }
 
     override fun onDestroy() {
-        playbackState = playbackState.copy(isPlaying = false, stationInfo = null)
+        playbackState = playbackState.copy(isPlaying = false, station = null)
         currentStationImage = null
         mediaSession.release()
         mediaSessionConnector.setPlayer(null)
@@ -176,7 +193,7 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
 
     private fun load(loadEvent: Event.LoadStation) {
         loadStationImage(loadEvent.imageUrl)
-        playbackState = PlaybackState(false, StationInfo(loadEvent.id, loadEvent.name, loadEvent.imageUrl))
+        playbackState = PlaybackState(isPlaying = false, station = loadEvent.station)
         val mediaSource = mediaSourceFactory.buildMediaSource(loadEvent.streamUri)
         playerDelegate.prepare(mediaSource)
         play()
@@ -216,12 +233,19 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
     sealed class Event {
 
         @Parcelize
-        data class LoadStation(
-            val id: Int,
-            val name: String,
-            val imageUrl: String?,
+        data class LoadStation(val station: Station) : Event(), Parcelable {
+            val id: Int
+                get() = station.id
+
+            val name: String
+                get() = station.name
+
+            val imageUrl: String?
+                get() = station.imageUrl.url
+
             val streamUri: String
-        ) : Event(), Parcelable
+                get() = station.streamUrl.url
+        }
 
         @Parcelize
         object Play : Event(), Parcelable
@@ -244,7 +268,5 @@ class AudioPlayerService : MediaBrowserServiceCompat() {
         }
     }
 
-    data class PlaybackState(val isPlaying: Boolean, val stationInfo: StationInfo?)
-
-    data class StationInfo(val stationId: Int, val name: String, val imageUrl: String?)
+    data class PlaybackState(val isPlaying: Boolean, val station: Station?)
 }
