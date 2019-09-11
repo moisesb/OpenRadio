@@ -11,6 +11,6 @@ val homeFragmentModule = module {
     single { PaginationManager() }
     single<PaginationLoader> { get<PaginationManager>() }
     single<PaginationDetector> { get<PaginationManager>() }
-    single { HomeViewModel(get(), get()) }
+    single { HomeViewModel(get(), get(), get()) }
     factory { TopStationItemViewModelFactory(get(), get(), get()) }
 }
