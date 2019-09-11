@@ -1,4 +1,4 @@
-package net.moisesborges.ui.top.adapter
+package net.moisesborges.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import net.moisesborges.model.Station
 import net.moisesborges.ui.base.LifecycleRecyclerViewAdapter
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.base.StationsDiffCallback
-import net.moisesborges.ui.top.mvvm.PaginationDetector
+import net.moisesborges.ui.home.mvvm.PaginationDetector
 
 class TopStationsAdapter(
     private val topStationItemViewModelFactory: TopStationItemViewModelFactory,

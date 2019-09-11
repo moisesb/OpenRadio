@@ -11,6 +11,7 @@ import net.moisesborges.base.BaseViewModeTest
 import net.moisesborges.base.createTestStation
 import net.moisesborges.base.testRxSchedulers
 import net.moisesborges.features.favorite.FavoriteStationManager
+import net.moisesborges.ui.home.adapter.TopStationItemViewModel
 import net.moisesborges.ui.navigation.Navigator
 import org.amshove.kluent.`should be equal to`
 import org.junit.Test
@@ -30,7 +31,12 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
     lateinit var testSubject: TopStationItemViewModel
 
     override fun setup() {
-        testSubject = TopStationItemViewModel(station, navigator, favoriteStationManager, testRxSchedulers)
+        testSubject = TopStationItemViewModel(
+            station,
+            navigator,
+            favoriteStationManager,
+            testRxSchedulers
+        )
     }
 
     @Test fun `When itemSelected, the should navigate to audio player for that station`() {

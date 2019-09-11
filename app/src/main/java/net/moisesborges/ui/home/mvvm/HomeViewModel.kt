@@ -1,4 +1,4 @@
-package net.moisesborges.ui.top.mvvm
+package net.moisesborges.ui.home.mvvm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import net.moisesborges.model.Station
 import net.moisesborges.utils.RxSchedulers
 import timber.log.Timber
 
-class TopStationsViewModel(
+class HomeViewModel(
     private val openRadioApi: OpenRadioApi,
     private val paginationLoader: PaginationLoader,
     private val rxSchedulers: RxSchedulers

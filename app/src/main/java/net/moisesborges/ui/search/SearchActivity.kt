@@ -13,7 +13,7 @@ import net.moisesborges.extensions.withUnwrapped
 import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.search.adapter.SearchItemsAdapter
 import net.moisesborges.ui.search.mvvm.SearchViewModel
-import net.moisesborges.ui.top.adapter.TopStationItemViewModelFactory
+import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
 import org.koin.android.ext.android.get
 
 class SearchActivity : LifecycleActivity() {

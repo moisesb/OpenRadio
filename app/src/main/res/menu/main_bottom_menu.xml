@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item   android:id="@+id/top_stations_menu_item"
-            android:title="@string/top_radios_menu_title"
-            android:icon="@drawable/ic_baseline_star_24px"/>
+    <item   android:id="@+id/home_stations_menu_item"
+            android:title="@string/home_menu_title"
+            android:icon="@drawable/ic_home_24px"/>
 
-    <item   android:id="@+id/favorites_stations_menu_item"
-            android:title="@string/favorites_radios_menu_title"
-            android:icon="@drawable/ic_baseline_favorite_24px"/>
+    <item   android:id="@+id/search_menu_item"
+            android:title="@string/search_menu_item_title"
+            android:icon="@drawable/ic_search_black_24dp"/>
 
-    <item   android:id="@+id/settings_menu_item"
-            android:title="@string/settings_menu_title"
-            android:icon="@drawable/ic_baseline_settings_20px"/>
+    <item   android:id="@+id/my_stations_menu_item"
+            android:title="@string/my_stations_menu_title"
+            android:icon="@drawable/ic_radio_24px"/>
 
 </menu>

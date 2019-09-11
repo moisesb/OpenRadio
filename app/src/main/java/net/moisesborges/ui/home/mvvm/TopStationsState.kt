@@ -1,4 +1,4 @@
-package net.moisesborges.ui.top.mvvm
+package net.moisesborges.ui.home.mvvm
 
 import net.moisesborges.model.Station
 

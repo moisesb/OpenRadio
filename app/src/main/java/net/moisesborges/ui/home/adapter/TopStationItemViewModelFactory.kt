@@ -1,4 +1,4 @@
-package net.moisesborges.ui.top.adapter
+package net.moisesborges.ui.home.adapter
 
 import net.moisesborges.features.favorite.FavoriteStationManager
 import net.moisesborges.model.Station
@@ -12,5 +12,10 @@ class TopStationItemViewModelFactory(
 ) {
 
     fun create(station: Station) =
-            TopStationItemViewModel(station, navigator, favoriteStationManager, rxSchedulers)
+        TopStationItemViewModel(
+            station,
+            navigator,
+            favoriteStationManager,
+            rxSchedulers
+        )
 }
