@@ -12,8 +12,8 @@ import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.favorites.FavoritesStationsFragment
 import net.moisesborges.ui.main.mvvm.PageSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
-import net.moisesborges.ui.settings.SettingsFragment
-import net.moisesborges.ui.top.TopStationsFragment
+import net.moisesborges.ui.recentsearches.RecentSearchesFragment
+import net.moisesborges.ui.home.HomeFragment
 import org.koin.android.ext.android.get
 import java.lang.IllegalStateException
 
@@ -32,9 +32,9 @@ class MainActivity : LifecycleActivity() {
 
         mainViewModel.pageSelection.observe(this, Observer {
             val fragment = when (it) {
-                PageSelection.TOP_RADIOS -> TopStationsFragment()
-                PageSelection.FAVOURITES_RADIOS -> FavoritesStationsFragment()
-                PageSelection.SETTINGS -> SettingsFragment()
+                PageSelection.HOME -> HomeFragment()
+                PageSelection.MY_STATIONS -> FavoritesStationsFragment()
+                PageSelection.RECENT_SEARCHES -> RecentSearchesFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }
             supportFragmentManager.beginTransaction()
@@ -68,9 +68,9 @@ class MainActivity : LifecycleActivity() {
 
     private fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.top_stations_menu_item -> mainViewModel.topRadiosSelected()
-            R.id.favorites_stations_menu_item -> mainViewModel.favoritesRadiosSelected()
-            R.id.settings_menu_item -> mainViewModel.settingsSelected()
+            R.id.home_stations_menu_item -> mainViewModel.homeSelected()
+            R.id.my_stations_menu_item -> mainViewModel.myStationsSelected()
+            R.id.search_menu_item -> mainViewModel.recentSearchesSelected()
             else -> return false
         }
         return true

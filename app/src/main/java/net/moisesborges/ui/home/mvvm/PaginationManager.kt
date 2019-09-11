@@ -1,9 +1,10 @@
-package net.moisesborges.ui.top.mvvm
+package net.moisesborges.ui.home.mvvm
 
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-class PaginationManager : PaginationLoader, PaginationDetector {
+class PaginationManager : PaginationLoader,
+    PaginationDetector {
 
     private var page = 0
     private var loading = false

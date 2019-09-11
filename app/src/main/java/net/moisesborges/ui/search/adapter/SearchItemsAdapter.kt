@@ -12,7 +12,7 @@ import net.moisesborges.databinding.TopStationItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.search.mvvm.SearchItem
-import net.moisesborges.ui.top.adapter.TopStationItemViewModelFactory
+import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
 
 private const val STATION_VIEW_TYPE = 0
 private const val PROGRESS_INDICATOR_VIEW_TYPE = 1

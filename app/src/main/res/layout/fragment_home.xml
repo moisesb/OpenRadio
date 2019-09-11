@@ -2,7 +2,7 @@
 <layout>
 
     <data>
-        <variable name="viewModel" type="net.moisesborges.ui.top.mvvm.TopStationsViewModel"/>
+        <variable name="viewModel" type="net.moisesborges.ui.home.mvvm.HomeViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

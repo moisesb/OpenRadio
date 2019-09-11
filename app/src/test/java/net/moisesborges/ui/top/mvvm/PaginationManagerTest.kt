@@ -1,5 +1,6 @@
 package net.moisesborges.ui.top.mvvm
 
+import net.moisesborges.ui.home.mvvm.PaginationManager
 import org.junit.Test
 
 class PaginationManagerTest {

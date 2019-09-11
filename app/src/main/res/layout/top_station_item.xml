@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="net.moisesborges.ui.top.adapter.TopStationItemViewModel"/>
+        <variable name="viewModel" type="net.moisesborges.ui.home.adapter.TopStationItemViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

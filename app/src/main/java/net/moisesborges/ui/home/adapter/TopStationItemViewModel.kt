@@ -1,4 +1,4 @@
-package net.moisesborges.ui.top.adapter
+package net.moisesborges.ui.home.adapter
 
 import androidx.lifecycle.MutableLiveData
 import net.moisesborges.features.favorite.FavoriteStationManager

@@ -11,7 +11,7 @@ import net.moisesborges.ui.favorites.di.favoritesModule
 import net.moisesborges.ui.station.di.stationActivityModule
 import net.moisesborges.ui.main.di.mainActivityModule
 import net.moisesborges.ui.search.di.searchActivityModule
-import net.moisesborges.ui.top.di.topFragmentsModule
+import net.moisesborges.ui.home.di.homeFragmentModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.android.startKoin
 import org.koin.dsl.module.Module
@@ -34,7 +34,7 @@ class App : Application() {
             appModule(applicationContext),
             apiModule,
             mainActivityModule,
-            topFragmentsModule,
+            homeFragmentModule,
             favoritesModule,
             audioPlayerModule,
             stationActivityModule,

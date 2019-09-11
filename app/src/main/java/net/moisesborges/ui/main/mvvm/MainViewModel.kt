@@ -15,16 +15,16 @@ class MainViewModel(private val navigator: Navigator) : ViewModel() {
 
     val pageSelection: LiveData<PageSelection> = Transformations.map(state) { it.pageSelection }
 
-    fun topRadiosSelected() {
-        setPageSelection(PageSelection.TOP_RADIOS)
+    fun homeSelected() {
+        setPageSelection(PageSelection.HOME)
     }
 
-    fun favoritesRadiosSelected() {
-        setPageSelection(PageSelection.FAVOURITES_RADIOS)
+    fun myStationsSelected() {
+        setPageSelection(PageSelection.MY_STATIONS)
     }
 
-    fun settingsSelected() {
-        setPageSelection(PageSelection.SETTINGS)
+    fun recentSearchesSelected() {
+        setPageSelection(PageSelection.RECENT_SEARCHES)
     }
 
     private fun setPageSelection(pageSelection: PageSelection) {

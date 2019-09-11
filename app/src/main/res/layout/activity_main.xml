@@ -54,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/colorPrimary"
+                android:background="@color/bottom_navigation_background"
                 app:itemIconTint="@color/bottom_navigation_icon_tint"
                 app:itemTextColor="@color/bottom_navigation_text_color"
                 app:menu="@menu/main_bottom_menu"
