@@ -2,8 +2,7 @@
 <layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="stationViewModel" type="net.moisesborges.ui.station.mvvm.StationViewModel"/>
-        <variable name="audioPlayerViewModel" type="net.moisesborges.ui.audioplayer.AudioPlayerViewModel"/>
+        <variable name="viewModel" type="net.moisesborges.ui.station.mvvm.StationViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +16,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_close_24px"
-                android:onClick="@{() -> stationViewModel.closeSelected()}"
+                android:onClick="@{() -> viewModel.closeSelected()}"
                 android:layout_marginStart="@dimen/station_close_button_margin"
                 android:layout_marginTop="@dimen/station_close_button_margin"
                 android:background="@android:color/transparent"
@@ -29,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="H,1:1"
-                app:setImage="@{stationViewModel.imageUrl}"
+                app:setImage="@{viewModel.imageUrl}"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="@dimen/station_image_margin_top"
                 android:layout_marginStart="@dimen/station_image_margin_horizontal"
@@ -42,7 +41,7 @@
                 android:id="@+id/audio_player_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{stationViewModel.title}"
+                android:text="@{viewModel.title}"
                 android:textSize="@dimen/station_title_text_size"
                 android:textColor="@color/station_title_text_color"
                 android:fontFamily="@font/roboto_medium"
@@ -62,8 +61,8 @@
                 android:src="@drawable/ic_baseline_play_circle_filled_24px"
                 android:scaleType="fitXY"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> audioPlayerViewModel.playPause()}"
-                app:togglePlayPause="@{audioPlayerViewModel.isPlaying}"
+                android:onClick="@{() -> viewModel.playPause()}"
+                app:togglePlayPause="@{viewModel.isPlaying}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/audio_player_title_text_view"

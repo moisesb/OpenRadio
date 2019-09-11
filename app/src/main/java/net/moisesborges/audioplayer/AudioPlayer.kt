@@ -21,7 +21,7 @@ class AudioPlayer(
     }
 
     fun load(station: Station) {
-        audioServiceLauncher.launch(Event.LoadStation(station.id, station.name, station.imageUrl.url, station.streamUrl.url))
+        audioServiceLauncher.launch(Event.LoadStation(station))
     }
 
     fun play() {
@@ -35,7 +35,12 @@ class AudioPlayer(
     fun isPlaying() = state.isPlaying
 
     fun playbackState(): Observable<PlaybackState> = audioPlayerServiceBinder.playbackState()
-        .map { PlaybackState(isPlaying = it.isPlaying, isLoaded = it.stationInfo != null) }
+        .map {
+            PlaybackState(
+                station = it.station ?: Station.EMPTY_STATION,
+                isPlaying = it.isPlaying
+            )
+        }
 }
 
 private data class AudioPlayerState(val isPlaying: Boolean)

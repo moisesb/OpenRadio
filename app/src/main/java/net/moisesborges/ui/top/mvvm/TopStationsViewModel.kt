@@ -3,18 +3,18 @@ package net.moisesborges.ui.top.mvvm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import net.moisesborges.api.OpenRadioApi
 import net.moisesborges.extensions.get
 import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.Station
+import net.moisesborges.utils.RxSchedulers
 import timber.log.Timber
 
 class TopStationsViewModel(
-    private val dirbleApi: OpenRadioApi,
-    private val paginationLoader: PaginationLoader
+    private val openRadioApi: OpenRadioApi,
+    private val paginationLoader: PaginationLoader,
+    private val rxSchedulers: RxSchedulers
 ) {
 
     private val disposables = CompositeDisposable()
@@ -36,9 +36,9 @@ class TopStationsViewModel(
 
     private fun loadTopRadios(pageNumber: Int) {
         state.value = state.get().copy(loading = true)
-        disposables += dirbleApi.getHomeContent()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        disposables += openRadioApi.getStations()
+            .subscribeOn(rxSchedulers.io())
+            .observeOn(rxSchedulers.mainThread())
             .subscribe(this::onStationsLoaded, this::onErrorHappened)
     }
 
