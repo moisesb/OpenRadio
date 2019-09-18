@@ -4,5 +4,5 @@ import net.moisesborges.ui.main.mvvm.MainViewModel
 import org.koin.dsl.module.module
 
 val mainActivityModule = module {
-    factory { MainViewModel(get()) }
+    factory { MainViewModel(get(), get()) }
 }

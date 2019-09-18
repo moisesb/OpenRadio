@@ -10,10 +10,10 @@ import net.moisesborges.databinding.ActivityMainBinding
 import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.favorites.FavoritesStationsFragment
-import net.moisesborges.ui.main.mvvm.PageSelection
 import net.moisesborges.ui.main.mvvm.MainViewModel
 import net.moisesborges.ui.recentsearches.RecentSearchesFragment
 import net.moisesborges.ui.home.HomeFragment
+import net.moisesborges.ui.navigation.TabSection
 import org.koin.android.ext.android.get
 import java.lang.IllegalStateException
 
@@ -30,11 +30,11 @@ class MainActivity : LifecycleActivity() {
         binding.lifecycleOwner = this
         binding.audioPlayerViewModel = audioPlayerViewModel
 
-        mainViewModel.pageSelection.observe(this, Observer {
+        mainViewModel.tabSection.observe(this, Observer {
             val fragment = when (it) {
-                PageSelection.HOME -> HomeFragment()
-                PageSelection.MY_STATIONS -> FavoritesStationsFragment()
-                PageSelection.RECENT_SEARCHES -> RecentSearchesFragment()
+                TabSection.HOME -> HomeFragment()
+                TabSection.MY_STATIONS -> FavoritesStationsFragment()
+                TabSection.RECENT_SEARCHES -> RecentSearchesFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }
             supportFragmentManager.beginTransaction()
@@ -49,6 +49,7 @@ class MainActivity : LifecycleActivity() {
     }
 
     override fun onDestroy() {
+        mainViewModel.clear()
         audioPlayerViewModel.clear()
         super.onDestroy()
     }

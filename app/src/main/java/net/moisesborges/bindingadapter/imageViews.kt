@@ -4,9 +4,22 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import net.moisesborges.R
 import net.moisesborges.model.ImageUrl
+import timber.log.Timber
+import java.lang.Exception
+
+private val callback = object : Callback {
+    override fun onSuccess() {
+        // Do nothing
+    }
+
+    override fun onError(e: Exception?) {
+        Timber.e("Could not load the image. Error: $e, message: ${e?.localizedMessage}")
+    }
+}
 
 @BindingAdapter("setImage")
 fun setImageBinding(view: ImageView, imageUrl: ImageUrl?) {
@@ -14,7 +27,7 @@ fun setImageBinding(view: ImageView, imageUrl: ImageUrl?) {
     if (url.isNotEmpty()) {
         Picasso.get()
             .load(url)
-            .into(view)
+            .into(view, callback)
     }
 }
 

@@ -4,34 +4,45 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import net.moisesborges.extensions.get
+import io.reactivex.disposables.CompositeDisposable
+import net.moisesborges.extensions.plusAssign
 import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.ui.navigation.TabNavigator
+import net.moisesborges.ui.navigation.TabSection
 
-class MainViewModel(private val navigator: Navigator) : ViewModel() {
+class MainViewModel(
+    private val navigator: Navigator,
+    private val tabNavigator: TabNavigator
+) : ViewModel() {
 
-    private val state: MutableLiveData<MainActivityState> = MutableLiveData<MainActivityState>().also {
-        it.value = initialMainActivityState()
+    private val mutableTabSection = MutableLiveData<TabSection>()
+
+    private val disposables = CompositeDisposable()
+
+    val tabSection: LiveData<TabSection> = Transformations.map(mutableTabSection) { it }
+
+    init {
+        disposables += tabNavigator.currentTabSection()
+            .subscribe { this.mutableTabSection.postValue(it) }
     }
 
-    val pageSelection: LiveData<PageSelection> = Transformations.map(state) { it.pageSelection }
-
     fun homeSelected() {
-        setPageSelection(PageSelection.HOME)
+        tabNavigator.navigateToHome()
     }
 
     fun myStationsSelected() {
-        setPageSelection(PageSelection.MY_STATIONS)
+        tabNavigator.navigateToMyStations()
     }
 
     fun recentSearchesSelected() {
-        setPageSelection(PageSelection.RECENT_SEARCHES)
-    }
-
-    private fun setPageSelection(pageSelection: PageSelection) {
-        state.value = state.get().copy(pageSelection = pageSelection)
+        tabNavigator.navigateToRecentSearches()
     }
 
     fun searchSelected() {
         navigator.navigateToSearch()
+    }
+
+    fun clear() {
+        disposables.clear()
     }
 }

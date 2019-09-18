@@ -20,6 +20,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/empty_favorite_station_list"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/explore_button_margin_top"
+                    android:text="@string/explore_button"
+                    android:onClick="@{() -> viewModel.exploreSelected()}"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

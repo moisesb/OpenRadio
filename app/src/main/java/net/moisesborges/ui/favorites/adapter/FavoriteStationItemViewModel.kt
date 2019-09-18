@@ -8,8 +8,6 @@ class FavoriteStationItemViewModel(
     private val navigator: Navigator
 ) {
 
-    val title = station.name
-    val description = station.countryCode
     val image = station.imageUrl
 
     fun itemSelected() {
