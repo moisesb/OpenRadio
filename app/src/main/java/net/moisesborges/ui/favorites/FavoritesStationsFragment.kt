@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import net.moisesborges.R
 import net.moisesborges.databinding.FragmentFavoritesStationsBinding
 import net.moisesborges.ui.base.LifecycleFragment
@@ -33,7 +33,8 @@ class FavoritesStationsFragment : LifecycleFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
-        binding.favoriteStationsRecyclerView.layoutManager = LinearLayoutManager(context)
+        val numOfColumns = context?.resources?.getInteger(R.integer.saved_stations_columns) ?: throw IllegalStateException("context must not be null")
+        binding.favoriteStationsRecyclerView.layoutManager = GridLayoutManager(context, numOfColumns)
         binding.favoriteStationsRecyclerView.adapter = adapter
 
         viewModel.favorites.observe(this, Observer {

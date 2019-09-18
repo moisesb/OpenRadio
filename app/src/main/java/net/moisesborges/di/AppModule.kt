@@ -8,6 +8,7 @@ import net.moisesborges.audioplayer.AudioPlayerService
 import net.moisesborges.audioplayer.MediaSourceFactory
 import net.moisesborges.ui.navigation.ActivityProvider
 import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.ui.navigation.TabNavigator
 import net.moisesborges.utils.BitmapFactory
 import net.moisesborges.utils.RxSchedulers
 import org.koin.dsl.module.module
@@ -17,6 +18,7 @@ val appModule = { context: Context ->
         factory { context.resources }
         single { ActivityProvider() }
         single { Navigator(get()) }
+        single { TabNavigator() }
         factory<ExoPlayer> { ExoPlayerFactory.newSimpleInstance(get()) }
         single { MediaSourceFactory(get()) }
         single { AudioPlayerService.Launcher(get()) }

@@ -8,11 +8,13 @@ import io.reactivex.disposables.Disposables
 import net.moisesborges.extensions.get
 import net.moisesborges.features.favorite.FavoriteStationManager
 import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.TabNavigator
 import net.moisesborges.utils.RxSchedulers
 
 class FavoritesViewModel(
     private val favoriteStationManager: FavoriteStationManager,
-    private val rxSchedulers: RxSchedulers
+    private val rxSchedulers: RxSchedulers,
+    private val tabNavigator: TabNavigator
 ) {
     private var disposable: Disposable = Disposables.empty()
 
@@ -30,6 +32,10 @@ class FavoritesViewModel(
             .subscribeOn(rxSchedulers.io())
             .observeOn(rxSchedulers.mainThread())
             .subscribe(this::handleStationsLoaded, this::handleError)
+    }
+
+    fun exploreSelected() {
+        tabNavigator.navigateToHome()
     }
 
     private fun handleStationsLoaded(stations: List<Station>) {
