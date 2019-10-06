@@ -36,8 +36,7 @@ import net.moisesborges.api.OpenRadioApi
 import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.base.BaseViewModeTest
-import net.moisesborges.model.Station
-import net.moisesborges.model.StreamUrl
+import net.moisesborges.base.givenNextStation
 
 class StationViewModelTest : BaseViewModeTest() {
 
@@ -99,11 +98,5 @@ class StationViewModelTest : BaseViewModeTest() {
 
         verify(audioPlayer, never()).pause()
         verify(audioPlayer, never()).play()
-    }
-
-    private fun givenNextStation(expectedStreamUrl: String): Station {
-        return mock {
-            on { streamUrl } doReturn StreamUrl(expectedStreamUrl)
-        }
     }
 }

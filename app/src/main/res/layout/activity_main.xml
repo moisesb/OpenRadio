@@ -38,17 +38,7 @@
             android:layout_height="match_parent"
             tools:context=".ui.main.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="0dp"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/toolbar_title_color"
-                app:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+
 
         <FrameLayout
                 android:id="@+id/radio_selection_container"
@@ -56,7 +46,7 @@
                 android:layout_height="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/audio_player_container"/>
 
         <FrameLayout

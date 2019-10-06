@@ -22,12 +22,11 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.search.mvvm
+package net.moisesborges.ui.recentsearches.di
 
-sealed class SearchItem {
+import net.moisesborges.ui.recentsearches.RecentSearchesViewModel
+import org.koin.dsl.module.module
 
-    data class Station(val station: net.moisesborges.model.Station) : SearchItem()
-    object ProgressIndicator : SearchItem()
-    data class EmptyResultsMessage(val message: String) : SearchItem()
-    data class ErrorMessage(val message: String) : SearchItem()
+val recentSearchesModule = module {
+    single { RecentSearchesViewModel(get()) }
 }

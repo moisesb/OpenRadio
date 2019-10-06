@@ -28,12 +28,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import net.moisesborges.R
+import net.moisesborges.databinding.FragmentRecentSearchesBinding
 import net.moisesborges.ui.base.LifecycleFragment
+import org.koin.android.ext.android.inject
 
 class RecentSearchesFragment : LifecycleFragment() {
 
+    private val viewModel: RecentSearchesViewModel by inject()
+
+    lateinit var binding: FragmentRecentSearchesBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_recent_searches, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_searches, container, false)
+        binding.viewModel = viewModel
+        return binding.root
     }
 }

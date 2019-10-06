@@ -24,9 +24,11 @@
 
 package net.moisesborges.ui.search.di
 
+import net.moisesborges.ui.search.mvvm.SearchStringResolver
 import net.moisesborges.ui.search.mvvm.SearchViewModel
 import org.koin.dsl.module.module
 
 val searchActivityModule = module {
-    factory { SearchViewModel(get(), get()) }
+    factory { SearchStringResolver(get()) }
+    factory { SearchViewModel(get(), get(), get()) }
 }

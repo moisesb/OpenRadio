@@ -27,13 +27,14 @@ package net.moisesborges.ui.search.mvvm
 import net.moisesborges.model.Station
 
 data class SearchState(
+    val hasSearchStarted: Boolean,
     val query: String,
     val isLoading: Boolean,
     val result: List<Station>,
     val error: SearchError?
 )
 
-fun initialSearchState() = SearchState("", false, emptyList(), null)
+fun initialSearchState() = SearchState(false, "", false, emptyList(), null)
 
 sealed class SearchError {
     object NotFound : SearchError()

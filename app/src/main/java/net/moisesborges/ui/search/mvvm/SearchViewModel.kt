@@ -33,39 +33,62 @@ import net.moisesborges.extensions.get
 import net.moisesborges.features.search.SearchEngine
 import net.moisesborges.utils.RxSchedulers
 
-class SearchViewModel(private val searchEngine: SearchEngine, private val rxSchedulers: RxSchedulers) {
+class SearchViewModel(
+    private val searchEngine: SearchEngine,
+    private val rxSchedulers: RxSchedulers,
+    private val stringResolver: SearchStringResolver
+) {
 
     private var disposable: Disposable = Disposables.empty()
     private val state = MutableLiveData<SearchState>().also {
         it.value = initialSearchState()
     }
 
-    val result: LiveData<List<SearchItem>> = Transformations.map(state) {
-        val stationResultItems = it.result.map(SearchItem::Station)
-        val progressResultItems: List<SearchItem> = if (it.isLoading) listOf(SearchItem.ProgressIndicator) else emptyList()
-        stationResultItems + progressResultItems
-    }
+    val result: LiveData<List<SearchItem>> = Transformations.map(state, this::searchItemsMapper)
 
     fun start() {
         disposable = searchEngine.searchResult()
             .subscribeOn(rxSchedulers.io())
             .observeOn(rxSchedulers.mainThread())
-            .retry()
-            .subscribe({ searchResult ->
-                state.value = state.get().copy(isLoading = searchResult.isPartial, result = searchResult.stations)
-            }, { error ->
+            .doOnError { error ->
                 state.value = state.get().copy(isLoading = false,
                     result = emptyList(),
                     error = SearchError.RequestError(error.message ?: ""))
-            })
+            }
+            .retry()
+            .subscribe { searchResult ->
+                state.value = state.get().copy(isLoading = searchResult.isPartial, result = searchResult.stations)
+            }
     }
 
     fun search(searchQuery: String) {
-        state.value = state.get().copy(isLoading = true)
-        searchEngine.setSearchQuery(searchQuery)
+        if (searchQuery.isNotBlank()) {
+            state.value = state.get().copy(isLoading = true, hasSearchStarted = true, query = searchQuery, error = null)
+            searchEngine.setSearchQuery(searchQuery)
+        } else {
+            state.value = state.get().copy(isLoading = false, hasSearchStarted = false, query = searchQuery, error = null, result = emptyList())
+        }
     }
 
     fun clear() {
         disposable.dispose()
+        state.value = state.get().copy(hasSearchStarted = false)
+    }
+
+    private fun searchItemsMapper(state: SearchState): List<SearchItem> {
+        if (state.error != null && state.result.isEmpty()) {
+            val message = stringResolver.somethingWentWrongMessage()
+            return listOf(SearchItem.ErrorMessage(message))
+        }
+        val stationResultItems = state.result.map(SearchItem::Station)
+        val progressResultItems: List<SearchItem> =
+            if (state.isLoading) listOf(SearchItem.ProgressIndicator) else emptyList()
+        val searchResult = stationResultItems + progressResultItems
+        return if (searchResult.isNotEmpty() || !state.hasSearchStarted) {
+            searchResult
+        } else {
+            val message = stringResolver.emptyResultsForQuery(state.query)
+            listOf(SearchItem.EmptyResultsMessage(message))
+        }
     }
 }
