@@ -31,7 +31,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
+import net.moisesborges.databinding.EmptyResultsItemBinding
 import net.moisesborges.databinding.ProgressIndicatorItemBinding
+import net.moisesborges.databinding.SearchErrorItemBinding
 import net.moisesborges.databinding.TopStationItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
 import net.moisesborges.ui.base.LifecycleViewHolder
@@ -40,6 +42,8 @@ import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
 
 private const val STATION_VIEW_TYPE = 0
 private const val PROGRESS_INDICATOR_VIEW_TYPE = 1
+private const val EMPTY_RESULTS_VIEW_TYPE = 2
+private const val ERROR_VIEW_TYPE = 3
 
 class SearchItemsAdapter(
     private val viewModelFactory: TopStationItemViewModelFactory
@@ -62,6 +66,8 @@ class SearchItemsAdapter(
         return when (searchItems[position]) {
             is SearchItem.Station -> STATION_VIEW_TYPE
             is SearchItem.ProgressIndicator -> PROGRESS_INDICATOR_VIEW_TYPE
+            is SearchItem.EmptyResultsMessage -> EMPTY_RESULTS_VIEW_TYPE
+            is SearchItem.ErrorMessage -> ERROR_VIEW_TYPE
         }
     }
 
@@ -75,6 +81,14 @@ class SearchItemsAdapter(
             PROGRESS_INDICATOR_VIEW_TYPE -> {
                 val binding: ProgressIndicatorItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.progress_indicator_item, parent, false)
                 SearchItemViewHolder.ProgressIndicator(binding)
+            }
+            EMPTY_RESULTS_VIEW_TYPE -> {
+                val binding: EmptyResultsItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.empty_results_item, parent, false)
+                SearchItemViewHolder.EmptyResults(binding)
+            }
+            ERROR_VIEW_TYPE -> {
+                val binding: SearchErrorItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.search_error_item, parent, false)
+                SearchItemViewHolder.ErrorMessage(binding)
             }
             else -> {
                 throw IllegalStateException("view type $viewType not supported")
@@ -90,6 +104,8 @@ class SearchItemsAdapter(
         val searchItem = searchItems[position]
         when (holder) {
             is SearchItemViewHolder.Station -> holder.bind(searchItem)
+            is SearchItemViewHolder.EmptyResults -> holder.bind(searchItem)
+            is SearchItemViewHolder.ErrorMessage -> holder.bind(searchItem)
         }
     }
 }
@@ -113,6 +129,31 @@ sealed class SearchItemViewHolder(binding: ViewDataBinding) : LifecycleViewHolde
 
         override fun bind(searchItem: SearchItem) {
             // Blank
+        }
+    }
+
+    class EmptyResults(
+        val binding: EmptyResultsItemBinding
+    ) : SearchItemViewHolder(binding) {
+
+        override fun bind(searchItem: SearchItem) {
+            if (searchItem !is SearchItem.EmptyResultsMessage) {
+                return
+            }
+            binding.message.text = searchItem.message
+        }
+    }
+
+    class ErrorMessage(
+        val binding: SearchErrorItemBinding
+    ) : SearchItemViewHolder(binding) {
+
+        override fun bind(searchItem: SearchItem) {
+            if (searchItem !is SearchItem.ErrorMessage) {
+                return
+            }
+
+            binding.message.text = searchItem.message
         }
     }
 

@@ -24,10 +24,12 @@
 
 package net.moisesborges.ui.search.mvvm
 
-sealed class SearchItem {
+import android.content.Context
+import net.moisesborges.R
 
-    data class Station(val station: net.moisesborges.model.Station) : SearchItem()
-    object ProgressIndicator : SearchItem()
-    data class EmptyResultsMessage(val message: String) : SearchItem()
-    data class ErrorMessage(val message: String) : SearchItem()
+class SearchStringResolver(private val context: Context) {
+
+    fun emptyResultsForQuery(query: String): String = context.getString(R.string.empty_results_message, query)
+
+    fun somethingWentWrongMessage(): String = context.getString(R.string.something_wrong_message)
 }

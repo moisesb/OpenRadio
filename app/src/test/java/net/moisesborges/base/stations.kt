@@ -22,12 +22,15 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.search.mvvm
+package net.moisesborges.base
 
-sealed class SearchItem {
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import net.moisesborges.model.Station
+import net.moisesborges.model.StreamUrl
 
-    data class Station(val station: net.moisesborges.model.Station) : SearchItem()
-    object ProgressIndicator : SearchItem()
-    data class EmptyResultsMessage(val message: String) : SearchItem()
-    data class ErrorMessage(val message: String) : SearchItem()
+fun givenNextStation(expectedStreamUrl: String): Station {
+    return mock {
+        on { streamUrl } doReturn StreamUrl(expectedStreamUrl)
+    }
 }

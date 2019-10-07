@@ -36,6 +36,7 @@ import net.moisesborges.ui.station.di.stationActivityModule
 import net.moisesborges.ui.main.di.mainActivityModule
 import net.moisesborges.ui.search.di.searchActivityModule
 import net.moisesborges.ui.home.di.homeFragmentModule
+import net.moisesborges.ui.recentsearches.di.recentSearchesModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.android.startKoin
 import org.koin.dsl.module.Module
@@ -64,7 +65,8 @@ class App : Application() {
             stationActivityModule,
             databaseModule,
             featuresModule,
-            searchActivityModule
+            searchActivityModule,
+            recentSearchesModule
         )
     }
 

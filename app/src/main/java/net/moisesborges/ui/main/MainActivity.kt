@@ -24,16 +24,17 @@
 
 package net.moisesborges.ui.main
 
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
+import android.view.Window
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import net.moisesborges.R
 import net.moisesborges.databinding.ActivityMainBinding
 import net.moisesborges.ui.audioplayer.AudioPlayerViewModel
 import net.moisesborges.ui.base.LifecycleActivity
-import net.moisesborges.ui.favorites.FavoritesStationsFragment
+import net.moisesborges.ui.favorites.MyStationsFragment
 import net.moisesborges.ui.main.mvvm.MainViewModel
 import net.moisesborges.ui.recentsearches.RecentSearchesFragment
 import net.moisesborges.ui.home.HomeFragment
@@ -50,6 +51,11 @@ class MainActivity : LifecycleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            with(window) {
+                requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
+            }
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.audioPlayerViewModel = audioPlayerViewModel
@@ -57,7 +63,7 @@ class MainActivity : LifecycleActivity() {
         mainViewModel.tabSection.observe(this, Observer {
             val fragment = when (it) {
                 TabSection.HOME -> HomeFragment()
-                TabSection.MY_STATIONS -> FavoritesStationsFragment()
+                TabSection.MY_STATIONS -> MyStationsFragment()
                 TabSection.RECENT_SEARCHES -> RecentSearchesFragment()
                 else -> throw IllegalStateException("Support for $it radio selection not implemented")
             }
@@ -66,21 +72,13 @@ class MainActivity : LifecycleActivity() {
                 .commit()
         })
 
-        binding.toolbar.setOnMenuItemClickListener(this::onMenuItemSelected)
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this::onMenuItemSelected)
-
-        setSupportActionBar(binding.toolbar)
     }
 
     override fun onDestroy() {
         mainViewModel.clear()
         audioPlayerViewModel.clear()
         super.onDestroy()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_top_menu, menu)
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

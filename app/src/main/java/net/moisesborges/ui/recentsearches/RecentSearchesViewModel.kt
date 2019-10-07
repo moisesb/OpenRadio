@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.search.mvvm
+package net.moisesborges.ui.recentsearches
 
-sealed class SearchItem {
+import net.moisesborges.ui.navigation.Navigator
 
-    data class Station(val station: net.moisesborges.model.Station) : SearchItem()
-    object ProgressIndicator : SearchItem()
-    data class EmptyResultsMessage(val message: String) : SearchItem()
-    data class ErrorMessage(val message: String) : SearchItem()
+class RecentSearchesViewModel(private val navigator: Navigator) {
+
+    fun selectSearch() {
+        navigator.navigateToSearch()
+    }
 }

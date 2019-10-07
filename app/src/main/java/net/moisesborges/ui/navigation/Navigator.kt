@@ -25,6 +25,9 @@
 package net.moisesborges.ui.navigation
 
 import android.app.Activity
+import android.app.ActivityOptions
+import android.os.Build
+import android.transition.Fade
 import net.moisesborges.model.Station
 import net.moisesborges.ui.search.createSearchActivityIntent
 import net.moisesborges.ui.station.createStationActivityIntent
@@ -47,7 +50,14 @@ class Navigator(
     fun navigateToSearch() {
         navigateToActivity { currentActivity ->
             val intent = createSearchActivityIntent(currentActivity)
-            currentActivity.startActivity(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                with(currentActivity.window) {
+                    exitTransition = Fade()
+                }
+                currentActivity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(currentActivity).toBundle())
+            } else {
+                currentActivity.startActivity(intent)
+            }
         }
     }
 

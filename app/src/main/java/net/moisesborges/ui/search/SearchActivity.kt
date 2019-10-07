@@ -26,7 +26,10 @@ package net.moisesborges.ui.search
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.transition.Fade
+import android.view.Window
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -50,6 +53,13 @@ class SearchActivity : LifecycleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            with(window) {
+                requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
+                enterTransition = Fade()
+                exitTransition = Fade()
+            }
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.viewModel = viewModel
         viewModel.result.observe(this, Observer { searchItems ->
@@ -69,16 +79,23 @@ class SearchActivity : LifecycleActivity() {
     }
 
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return true
-            }
+        with(binding.searchView) {
+            isIconified = false
+            setQuery("", true)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return true
+                }
 
-            override fun onQueryTextChange(newQuery: String): Boolean {
-                viewModel.search(newQuery)
-                return true
-            }
-        })
+                override fun onQueryTextChange(newQuery: String): Boolean {
+                    viewModel.search(newQuery)
+                    return true
+                }
+            })
+
+            requestFocus()
+            requestFocusFromTouch()
+        }
     }
 
     private fun setupToolbar() {
