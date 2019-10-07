@@ -72,10 +72,7 @@ class MainActivity : LifecycleActivity() {
                 .commit()
         })
 
-        // binding.toolbar.setOnMenuItemClickListener(this::onMenuItemSelected)
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this::onMenuItemSelected)
-
-        // setSupportActionBar(binding.toolbar)
     }
 
     override fun onDestroy() {
@@ -83,11 +80,6 @@ class MainActivity : LifecycleActivity() {
         audioPlayerViewModel.clear()
         super.onDestroy()
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.main_top_menu, menu)
-//        return true
-//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
