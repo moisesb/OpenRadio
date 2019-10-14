@@ -32,7 +32,6 @@ import net.moisesborges.features.recentsearches.RecentSearchReposity
 import net.moisesborges.ui.navigation.Navigator
 import net.moisesborges.utils.RxSchedulers
 
-// TODO: fix thumbnail
 class RecentSearchesViewModel(
     private val recentSearchReposity: RecentSearchReposity,
     private val rxSchedulers: RxSchedulers,

@@ -44,7 +44,6 @@ class StationItemViewModel(
         this.value = false
     }
 
-    // TODO: dispose after item not visible
     init {
         favoriteStationManager.favoriteState(station.id)
             .subscribeOn(rxSchedulers.io())
