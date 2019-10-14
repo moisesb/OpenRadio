@@ -22,21 +22,27 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.db.station
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+import java.util.Date
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+@Entity(tableName = "station")
+data class StationEntity(
+    @PrimaryKey(autoGenerate = false)
+    var id: Int,
+    var name: String,
+    var countryCode: String,
+    var imageUrl: String,
+    var thumbnailUrl: String,
+    @Ignore var genres: List<GenreEntity>,
+    var streamUrl: String,
+    @ColumnInfo(name = "created_at")
+    var createdAt: Date?
+) {
+
+    constructor() : this(-1, "", "", "", "", emptyList(), "", null)
 }

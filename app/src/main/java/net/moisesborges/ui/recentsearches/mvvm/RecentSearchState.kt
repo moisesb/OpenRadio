@@ -22,17 +22,13 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.ui.recentsearches.mvvm
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import net.moisesborges.model.Station
 
-@Entity(tableName = "genre")
-data class GenreEntity(
-    @PrimaryKey(autoGenerate = false)
-    var id: String,
-    var name: String
-) {
+data class RecentSearchState(
+    val isLoading: Boolean,
+    val recentViewedStations: List<Station>
+)
 
-    constructor(): this("", "")
-}
+fun initialRecentSearchState() = RecentSearchState(false, emptyList())

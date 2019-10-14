@@ -22,21 +22,31 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.db.station
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import androidx.room.Query
+import androidx.room.Dao
+import androidx.room.Update
+import androidx.room.Delete
+import androidx.room.Insert
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+@Dao
+interface StationDao {
+
+    @Insert
+    fun insertStation(stationEntity: StationEntity)
+
+    @Update
+    fun updateStation(stationEntity: StationEntity)
+
+    @Delete
+    fun deleteStation(stationEntity: StationEntity)
+
+    @Query("SELECT * FROM station WHERE id = (:stationId) ORDER BY created_at DESC")
+    fun fetchStation(stationId: Int): Maybe<StationEntity>
+
+    @Query("SELECT * FROM station")
+    fun fetchAllStations(): Flowable<List<StationEntity>>
 }

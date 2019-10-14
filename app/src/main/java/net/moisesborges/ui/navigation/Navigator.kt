@@ -47,6 +47,13 @@ class Navigator(
         }
     }
 
+    fun navigateToAudioPlayer(stationId: Int) {
+        navigateToActivity { currentActivity ->
+            val intent = createStationActivityIntent(stationId, currentActivity)
+            currentActivity.startActivity(intent)
+        }
+    }
+
     fun navigateToSearch() {
         navigateToActivity { currentActivity ->
             val intent = createSearchActivityIntent(currentActivity)

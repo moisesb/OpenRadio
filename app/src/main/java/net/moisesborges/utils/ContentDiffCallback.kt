@@ -22,21 +22,28 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.utils
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import androidx.recyclerview.widget.DiffUtil
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+class ContentDiffCallback<T>(
+    private val oldContent: List<T>,
+    private val newContent: List<T>
+) : DiffUtil.Callback() {
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldContent[oldItemPosition] == newContent[newItemPosition]
+    }
+
+    override fun getOldListSize(): Int {
+        return oldContent.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newContent.size
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldContent[oldItemPosition] == newContent[newItemPosition]
+    }
 }

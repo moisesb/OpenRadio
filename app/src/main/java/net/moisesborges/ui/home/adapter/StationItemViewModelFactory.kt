@@ -22,21 +22,24 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.ui.home.adapter
 
 import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.utils.RxSchedulers
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+class StationItemViewModelFactory(
+    private val navigator: Navigator,
+    private val favoriteStationManager: FavoriteStationManager,
+    private val rxSchedulers: RxSchedulers
+) {
+
+    fun create(station: Station) =
+        StationItemViewModel(
+            station,
+            navigator,
+            favoriteStationManager,
+            rxSchedulers
+        )
 }

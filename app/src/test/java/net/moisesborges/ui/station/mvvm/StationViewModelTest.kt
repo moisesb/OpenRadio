@@ -37,6 +37,7 @@ import net.moisesborges.audioplayer.AudioPlayer
 import net.moisesborges.audioplayer.PlaybackState
 import net.moisesborges.base.BaseViewModeTest
 import net.moisesborges.base.givenNextStation
+import net.moisesborges.base.testRxSchedulers
 
 class StationViewModelTest : BaseViewModeTest() {
 
@@ -50,7 +51,7 @@ class StationViewModelTest : BaseViewModeTest() {
     lateinit var testSubject: StationViewModel
 
     override fun setup() {
-        testSubject = StationViewModel(audioPlayer, openRadioApi, navigator)
+        testSubject = StationViewModel(audioPlayer, openRadioApi, navigator, testRxSchedulers)
     }
 
     @Test fun `when closeSelected, then it should navigateBack`() {

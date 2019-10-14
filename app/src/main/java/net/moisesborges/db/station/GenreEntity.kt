@@ -22,13 +22,17 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.recentsearches
+package net.moisesborges.db.station
 
-import net.moisesborges.ui.navigation.Navigator
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class RecentSearchesViewModel(private val navigator: Navigator) {
+@Entity(tableName = "genre")
+data class GenreEntity(
+    @PrimaryKey(autoGenerate = false)
+    var id: String,
+    var name: String
+) {
 
-    fun selectSearch() {
-        navigator.navigateToSearch()
-    }
+    constructor(): this("", "")
 }

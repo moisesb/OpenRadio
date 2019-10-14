@@ -35,12 +35,14 @@ import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.ImageUrl
 import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.utils.RxSchedulers
 import timber.log.Timber
 
 class StationViewModel(
     private val audioPlayer: AudioPlayer,
     private val openRadioApi: OpenRadioApi,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val rxSchedulers: RxSchedulers
 ) {
 
     private val disposables = CompositeDisposable()
@@ -69,6 +71,7 @@ class StationViewModel(
 
     fun prepareStation(stationId: Int) {
         disposables += openRadioApi.getStation(stationId)
+            .subscribeOn(rxSchedulers.io())
             .subscribe({ station ->
                 state.postValue(state.get().copy(station = station))
             }, {

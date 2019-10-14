@@ -22,24 +22,20 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.home.adapter
+package net.moisesborges.db.recentsearches
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.model.Station
-import net.moisesborges.ui.navigation.Navigator
-import net.moisesborges.utils.RxSchedulers
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.reactivex.Maybe
 
-class TopStationItemViewModelFactory(
-    private val navigator: Navigator,
-    private val favoriteStationManager: FavoriteStationManager,
-    private val rxSchedulers: RxSchedulers
-) {
+@Dao
+interface ViewedStationDao {
 
-    fun create(station: Station) =
-        TopStationItemViewModel(
-            station,
-            navigator,
-            favoriteStationManager,
-            rxSchedulers
-        )
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrUpdateViewedStation(viewedStationEntity: ViewedStationEntity)
+
+    @Query("SELECT * FROM viewed_station ORDER BY modified_at DESC LiMIT :limit")
+    fun fetchLastViewedStations(limit: Int): Maybe<List<ViewedStationEntity>>
 }

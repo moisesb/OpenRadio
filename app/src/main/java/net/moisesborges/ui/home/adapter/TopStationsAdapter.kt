@@ -29,7 +29,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import net.moisesborges.R
-import net.moisesborges.databinding.TopStationItemBinding
+import net.moisesborges.databinding.StationItemBinding
 import net.moisesborges.model.Station
 import net.moisesborges.ui.base.LifecycleRecyclerViewAdapter
 import net.moisesborges.ui.base.LifecycleViewHolder
@@ -37,7 +37,7 @@ import net.moisesborges.ui.base.StationsDiffCallback
 import net.moisesborges.ui.home.mvvm.PaginationDetector
 
 class TopStationsAdapter(
-    private val topStationItemViewModelFactory: TopStationItemViewModelFactory,
+    private val itemViewModelFactory: StationItemViewModelFactory,
     private val paginationDetector: PaginationDetector
 ) : LifecycleRecyclerViewAdapter<StationViewHolder>() {
 
@@ -53,7 +53,7 @@ class TopStationsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<TopStationItemBinding>(inflater, R.layout.top_station_item,
+        val binding = DataBindingUtil.inflate<StationItemBinding>(inflater, R.layout.station_item,
             parent, false)
         return StationViewHolder(binding)
     }
@@ -64,16 +64,16 @@ class TopStationsAdapter(
 
     override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
         val station = stations[position]
-        holder.bind(topStationItemViewModelFactory.create(station))
+        holder.bind(itemViewModelFactory.create(station))
         paginationDetector.onItemDisplayed(position, stations.size)
     }
 }
 
 class StationViewHolder(
-    private val binding: TopStationItemBinding
+    private val binding: StationItemBinding
 ) : LifecycleViewHolder(binding) {
 
-    fun bind(viewModel: TopStationItemViewModel) {
+    fun bind(viewModel: StationItemViewModel) {
         binding.viewModel = viewModel
         binding.executePendingBindings()
     }

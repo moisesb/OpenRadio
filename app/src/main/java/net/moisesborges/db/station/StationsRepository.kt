@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.db.station
 
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -62,8 +62,7 @@ class StationsRepository(private val stationDao: StationDao) {
     fun getStation(stationId: Int): Single<Station> {
         return stationDao.fetchStation(stationId)
             .map(this::entityToStation)
-            .defaultIfEmpty(Station.EMPTY_STATION)
-            .toSingle()
+            .toSingle(Station.EMPTY_STATION)
     }
 
     private fun stationToEntity(station: Station): StationEntity {
@@ -73,7 +72,12 @@ class StationsRepository(private val stationDao: StationDao) {
             station.countryCode,
             station.imageUrl.url,
             station.thumbnailUrl.url,
-            station.genres.map { genre -> GenreEntity(genre.id, genre.title) },
+            station.genres.map { genre ->
+                GenreEntity(
+                    genre.id,
+                    genre.title
+                )
+            },
             station.streamUrl.url,
             null
         )

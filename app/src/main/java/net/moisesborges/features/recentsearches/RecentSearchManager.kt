@@ -22,29 +22,36 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.search.adapter
+package net.moisesborges.features.recentsearches
 
-import androidx.recyclerview.widget.DiffUtil
-import net.moisesborges.ui.search.mvvm.SearchItem
+import io.reactivex.Single
+import net.moisesborges.db.recentsearches.ViewedStationsRepository
+import net.moisesborges.model.Station
+import net.moisesborges.utils.RxSchedulers
 
-class SearchItemsDiffCallback(
-    private val newSearchItems: List<SearchItem>,
-    private val oldSearchItems: List<SearchItem>
-) : DiffUtil.Callback() {
+interface RecentSearchRegistry {
+    fun onViewedFromSearch(station: Station)
+}
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldSearchItems[oldItemPosition] == newSearchItems[newItemPosition]
+interface RecentSearchReposity {
+    fun recentSearches(): Single<List<Station>>
+}
+
+private const val MAX_LAST_VIEWED_STATIONS = 5
+
+class RecentSearchManager(
+    private val repository: ViewedStationsRepository,
+    private val rxSchedulers: RxSchedulers
+) : RecentSearchRegistry,
+    RecentSearchReposity {
+
+    override fun onViewedFromSearch(station: Station) {
+        repository.saveLastViewedStation(station)
+            .subscribeOn(rxSchedulers.io())
+            .subscribe()
     }
 
-    override fun getOldListSize(): Int {
-        return oldSearchItems.size
-    }
-
-    override fun getNewListSize(): Int {
-        return newSearchItems.size
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldSearchItems[oldItemPosition] == newSearchItems[newItemPosition]
+    override fun recentSearches(): Single<List<Station>> {
+        return repository.getLastViewedStation(MAX_LAST_VIEWED_STATIONS)
     }
 }

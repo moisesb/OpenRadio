@@ -22,31 +22,22 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.ui.search.adapter
 
-import androidx.room.Query
-import androidx.room.Dao
-import androidx.room.Update
-import androidx.room.Delete
-import androidx.room.Insert
-import io.reactivex.Flowable
-import io.reactivex.Maybe
+import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.features.recentsearches.RecentSearchRegistry
+import net.moisesborges.ui.search.mvvm.StationSearchItemViewModel
 
-@Dao
-interface StationDao {
+class StationSearchItemViewModelFactory(
+    private val navigator: Navigator,
+    private val searchRegistry: RecentSearchRegistry
+) {
 
-    @Insert
-    fun insertStation(stationEntity: StationEntity)
-
-    @Update
-    fun updateStation(stationEntity: StationEntity)
-
-    @Delete
-    fun deleteStation(stationEntity: StationEntity)
-
-    @Query("SELECT * FROM station WHERE id = (:stationId) ORDER BY created_at DESC")
-    fun fetchStation(stationId: Int): Maybe<StationEntity>
-
-    @Query("SELECT * FROM station")
-    fun fetchAllStations(): Flowable<List<StationEntity>>
+    fun create(station: Station) =
+        StationSearchItemViewModel(
+            station,
+            navigator,
+            searchRegistry
+        )
 }

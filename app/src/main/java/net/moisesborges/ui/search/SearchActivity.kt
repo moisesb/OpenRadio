@@ -40,13 +40,13 @@ import net.moisesborges.extensions.withUnwrapped
 import net.moisesborges.ui.base.LifecycleActivity
 import net.moisesborges.ui.search.adapter.SearchItemsAdapter
 import net.moisesborges.ui.search.mvvm.SearchViewModel
-import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
+import net.moisesborges.ui.search.adapter.StationSearchItemViewModelFactory
 import org.koin.android.ext.android.get
 
 class SearchActivity : LifecycleActivity() {
 
     private val viewModel: SearchViewModel = get()
-    private val stationItemViewModelFactory: TopStationItemViewModelFactory = get()
+    private val stationItemViewModelFactory: StationSearchItemViewModelFactory = get()
     private val searchItemsAdapter = SearchItemsAdapter(stationItemViewModelFactory)
 
     private lateinit var binding: ActivitySearchBinding
@@ -65,10 +65,10 @@ class SearchActivity : LifecycleActivity() {
         viewModel.result.observe(this, Observer { searchItems ->
             searchItemsAdapter.setSearchItems(searchItems)
         })
-        viewModel.start()
         setupToolbar()
         setupSearchView()
         setupRecyclerView()
+        viewModel.start()
     }
 
     private fun setupRecyclerView() {

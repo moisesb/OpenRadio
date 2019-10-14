@@ -23,10 +23,11 @@
  */
 
 package net.moisesborges.ui.search.mvvm
+import net.moisesborges.model.Station as StationModel
 
 sealed class SearchItem {
 
-    data class Station(val station: net.moisesborges.model.Station) : SearchItem()
+    data class Station(val station: StationModel) : SearchItem()
     object ProgressIndicator : SearchItem()
     data class EmptyResultsMessage(val message: String) : SearchItem()
     data class ErrorMessage(val message: String) : SearchItem()

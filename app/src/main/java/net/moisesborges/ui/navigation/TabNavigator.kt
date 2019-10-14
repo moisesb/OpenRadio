@@ -34,6 +34,10 @@ class TabNavigator {
 
     fun currentTabSection(): Observable<TabSection> = tabSection
 
+    init {
+        tabSection.onNext(TabSection.HOME)
+    }
+
     fun navigateToHome() {
         tabSection.onNext(TabSection.HOME)
     }

@@ -22,27 +22,24 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.ui.search.mvvm
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import java.util.Date
+import net.moisesborges.features.recentsearches.RecentSearchRegistry
+import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
 
-@Entity(tableName = "station")
-data class StationEntity(
-    @PrimaryKey(autoGenerate = false)
-    var id: Int,
-    var name: String,
-    var countryCode: String,
-    var imageUrl: String,
-    var thumbnailUrl: String,
-    @Ignore var genres: List<GenreEntity>,
-    var streamUrl: String,
-    @ColumnInfo(name = "created_at")
-    var createdAt: Date?
+class StationSearchItemViewModel(
+    private val station: Station,
+    private val navigator: Navigator,
+    private val searchRegistry: RecentSearchRegistry
 ) {
 
-    constructor() : this(-1, "", "", "", "", emptyList(), "", null)
+    val title = station.name
+    val description = station.countryCode
+    val image = station.imageUrl
+
+    fun itemSelected() {
+        searchRegistry.onViewedFromSearch(station)
+        navigator.navigateToAudioPlayer(station.id)
+    }
 }
