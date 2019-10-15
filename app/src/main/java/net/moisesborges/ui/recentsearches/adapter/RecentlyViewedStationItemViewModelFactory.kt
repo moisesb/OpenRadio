@@ -26,14 +26,14 @@ package net.moisesborges.ui.recentsearches.adapter
 
 import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
-import net.moisesborges.ui.recentsearches.mvvm.RecentViewedStationItemViewModel
+import net.moisesborges.ui.recentsearches.mvvm.RecentlyViewedStationItemViewModel
 
-class RecentViewedStationItemViewModelFactory(
+class RecentlyViewedStationItemViewModelFactory(
     private val navigator: Navigator
 ) {
 
     fun create(station: Station) =
-        RecentViewedStationItemViewModel(
+        RecentlyViewedStationItemViewModel(
             station,
             navigator
         )

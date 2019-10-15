@@ -27,7 +27,7 @@ package net.moisesborges.ui.recentsearches.mvvm
 import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
 
-class RecentViewedStationItemViewModel(
+class RecentlyViewedStationItemViewModel(
     private val station: Station,
     private val navigator: Navigator
 ) {

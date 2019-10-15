@@ -34,17 +34,17 @@ import net.moisesborges.R
 import net.moisesborges.databinding.FragmentRecentSearchesBinding
 import net.moisesborges.ui.base.LifecycleFragment
 import net.moisesborges.ui.recentsearches.adapter.RecentSearchesAdapter
-import net.moisesborges.ui.recentsearches.adapter.RecentViewedStationItemViewModelFactory
+import net.moisesborges.ui.recentsearches.adapter.RecentlyViewedStationItemViewModelFactory
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchesViewModel
 import org.koin.android.ext.android.inject
 
 class RecentSearchesFragment : LifecycleFragment() {
 
     private val viewModel: RecentSearchesViewModel by inject()
-    private val recentViewedStationItemViewModelFactory: RecentViewedStationItemViewModelFactory by inject()
+    private val recentlyViewedStationItemViewModelFactory: RecentlyViewedStationItemViewModelFactory by inject()
 
     private lateinit var binding: FragmentRecentSearchesBinding
-    private val adapter = RecentSearchesAdapter(recentViewedStationItemViewModelFactory)
+    private val adapter = RecentSearchesAdapter(recentlyViewedStationItemViewModelFactory)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_searches, container, false)

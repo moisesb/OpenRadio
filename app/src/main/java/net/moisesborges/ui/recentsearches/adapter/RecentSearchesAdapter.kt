@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.databinding.HeaderItemBinding
-import net.moisesborges.databinding.RecentViewedStationItemBinding
+import net.moisesborges.databinding.RecentlyViewedStationItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchItem
@@ -42,7 +42,7 @@ private const val HEADER_VIEW_TYPE = 0
 private const val RECENT_VIEWED_STATION_VIEW_TYPE = 1
 
 class RecentSearchesAdapter(
-    private val viewModelFactory: RecentViewedStationItemViewModelFactory
+    private val viewModelFactory: RecentlyViewedStationItemViewModelFactory
 ) : RecyclerView.Adapter<RecentSearchesContentViewHolder>() {
 
     var content: List<RecentSearchItem> = mutableListOf()
@@ -66,13 +66,13 @@ class RecentSearchesAdapter(
             }
 
             RECENT_VIEWED_STATION_VIEW_TYPE -> {
-                val binding: RecentViewedStationItemBinding = DataBindingUtil.inflate(
+                val binding: RecentlyViewedStationItemBinding = DataBindingUtil.inflate(
                     layoutInflater,
-                    R.layout.recent_viewed_station_item,
+                    R.layout.recently_viewed_station_item,
                     parent,
                     false
                 )
-                RecentSearchesContentViewHolder.RecentViewedStation(binding, viewModelFactory)
+                RecentSearchesContentViewHolder.RecentlyViewedStation(binding, viewModelFactory)
             }
 
             else -> throw UnsupportedOperationException("view holder for view type $viewType not implemented")
@@ -86,7 +86,7 @@ class RecentSearchesAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (content[position]) {
             is RecentSearchItem.Header -> HEADER_VIEW_TYPE
-            is RecentSearchItem.RecentViewedStation -> RECENT_VIEWED_STATION_VIEW_TYPE
+            is RecentSearchItem.RecentlyViewedStation -> RECENT_VIEWED_STATION_VIEW_TYPE
         }
     }
 
@@ -111,12 +111,12 @@ sealed class RecentSearchesContentViewHolder(binding: ViewDataBinding) : Lifecyc
         }
     }
 
-    class RecentViewedStation(
-        val binding: RecentViewedStationItemBinding,
-        private val viewModelFactory: RecentViewedStationItemViewModelFactory
+    class RecentlyViewedStation(
+        val binding: RecentlyViewedStationItemBinding,
+        private val viewModelFactory: RecentlyViewedStationItemViewModelFactory
     ) : RecentSearchesContentViewHolder(binding) {
         override fun bind(item: RecentSearchItem) {
-            if (item !is RecentSearchItem.RecentViewedStation) {
+            if (item !is RecentSearchItem.RecentlyViewedStation) {
                 return
             }
             binding.viewModel = viewModelFactory.create(item.station)

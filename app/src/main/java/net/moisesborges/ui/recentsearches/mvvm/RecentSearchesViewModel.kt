@@ -68,7 +68,7 @@ class RecentSearchesViewModel(
         val recentViewedStations = state.recentViewedStations
         if (recentViewedStations.isNotEmpty()) {
             content += RecentSearchItem.Header("Recent Viewed")
-            content += recentViewedStations.map(RecentSearchItem::RecentViewedStation)
+            content += recentViewedStations.map(RecentSearchItem::RecentlyViewedStation)
         }
         return content
     }

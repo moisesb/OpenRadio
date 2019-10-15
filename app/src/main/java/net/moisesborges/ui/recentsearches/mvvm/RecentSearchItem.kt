@@ -30,5 +30,5 @@ sealed class RecentSearchItem {
 
     data class Header(val title: String) : RecentSearchItem()
 
-    data class RecentViewedStation(val station: Station) : RecentSearchItem()
+    data class RecentlyViewedStation(val station: Station) : RecentSearchItem()
 }

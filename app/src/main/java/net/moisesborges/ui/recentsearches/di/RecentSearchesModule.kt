@@ -24,11 +24,11 @@
 
 package net.moisesborges.ui.recentsearches.di
 
-import net.moisesborges.ui.recentsearches.adapter.RecentViewedStationItemViewModelFactory
+import net.moisesborges.ui.recentsearches.adapter.RecentlyViewedStationItemViewModelFactory
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchesViewModel
 import org.koin.dsl.module.module
 
 val recentSearchesModule = module {
     single { RecentSearchesViewModel(get(), get(), get()) }
-    factory { RecentViewedStationItemViewModelFactory(get()) }
+    factory { RecentlyViewedStationItemViewModelFactory(get()) }
 }
