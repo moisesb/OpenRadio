@@ -35,12 +35,12 @@ import net.moisesborges.base.BaseViewModeTest
 import net.moisesborges.base.createTestStation
 import net.moisesborges.base.testRxSchedulers
 import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.ui.home.adapter.TopStationItemViewModel
+import net.moisesborges.ui.home.adapter.StationItemViewModel
 import net.moisesborges.ui.navigation.Navigator
 import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
-class TopStationItemViewModelTest : BaseViewModeTest() {
+class StationItemViewModelTest : BaseViewModeTest() {
 
     val station = createTestStation()
 
@@ -52,10 +52,10 @@ class TopStationItemViewModelTest : BaseViewModeTest() {
 
     val navigator: Navigator = mock()
 
-    lateinit var testSubject: TopStationItemViewModel
+    lateinit var testSubject: StationItemViewModel
 
     override fun setup() {
-        testSubject = TopStationItemViewModel(
+        testSubject = StationItemViewModel(
             station,
             navigator,
             favoriteStationManager,

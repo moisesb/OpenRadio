@@ -22,21 +22,36 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.features.recentsearches
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import io.reactivex.Single
+import net.moisesborges.db.recentsearches.ViewedStationsRepository
+import net.moisesborges.model.Station
+import net.moisesborges.utils.RxSchedulers
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+interface RecentSearchRegistry {
+    fun onViewedFromSearch(station: Station)
+}
+
+interface RecentSearchReposity {
+    fun recentSearches(): Single<List<Station>>
+}
+
+private const val MAX_LAST_VIEWED_STATIONS = 5
+
+class RecentSearchManager(
+    private val repository: ViewedStationsRepository,
+    private val rxSchedulers: RxSchedulers
+) : RecentSearchRegistry,
+    RecentSearchReposity {
+
+    override fun onViewedFromSearch(station: Station) {
+        repository.saveLastViewedStation(station)
+            .subscribeOn(rxSchedulers.io())
+            .subscribe()
+    }
+
+    override fun recentSearches(): Single<List<Station>> {
+        return repository.getLastViewedStation(MAX_LAST_VIEWED_STATIONS)
+    }
 }

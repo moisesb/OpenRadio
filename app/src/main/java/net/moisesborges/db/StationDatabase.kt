@@ -27,10 +27,21 @@ package net.moisesborges.db
 import androidx.room.RoomDatabase
 import androidx.room.Database
 import androidx.room.TypeConverters
+import net.moisesborges.db.recentsearches.ViewedStationEntity
+import net.moisesborges.db.recentsearches.ViewedStationDao
+import net.moisesborges.db.station.GenreEntity
+import net.moisesborges.db.station.StationDao
+import net.moisesborges.db.station.StationEntity
 
-@Database(entities = [GenreEntity::class, StationEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [GenreEntity::class, StationEntity::class, ViewedStationEntity::class],
+    version = 3,
+    exportSchema = false
+)
 @TypeConverters(DateConverter::class)
 abstract class StationDatabase : RoomDatabase() {
 
     abstract fun stationDao(): StationDao
+
+    abstract fun viewedStationDao(): ViewedStationDao
 }

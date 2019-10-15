@@ -22,21 +22,21 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.features.di
+package net.moisesborges.ui.recentsearches.mvvm
 
-import net.moisesborges.features.favorite.FavoriteStationManager
-import net.moisesborges.features.location.LocationProvider
-import net.moisesborges.features.recentsearches.RecentSearchManager
-import net.moisesborges.features.recentsearches.RecentSearchRegistry
-import net.moisesborges.features.recentsearches.RecentSearchReposity
-import net.moisesborges.features.search.SearchEngine
-import org.koin.dsl.module.module
+import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
 
-val featuresModule = module {
-    single { FavoriteStationManager(get()) }
-    single { LocationProvider(get()) }
-    single { SearchEngine(get()) }
-    single { RecentSearchManager(get(), get()) }
-    single<RecentSearchRegistry> { get<RecentSearchManager>() }
-    single<RecentSearchReposity> { get<RecentSearchManager>() }
+class RecentlyViewedStationItemViewModel(
+    private val station: Station,
+    private val navigator: Navigator
+) {
+
+    val title = station.name
+    val description = station.countryCode
+    val image = station.imageUrl
+
+    fun itemSelected() {
+        navigator.navigateToAudioPlayer(station.id)
+    }
 }

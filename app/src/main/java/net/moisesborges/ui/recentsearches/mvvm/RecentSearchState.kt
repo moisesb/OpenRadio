@@ -22,31 +22,13 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.ui.recentsearches.mvvm
 
-import androidx.room.Query
-import androidx.room.Dao
-import androidx.room.Update
-import androidx.room.Delete
-import androidx.room.Insert
-import io.reactivex.Flowable
-import io.reactivex.Maybe
+import net.moisesborges.model.Station
 
-@Dao
-interface StationDao {
+data class RecentSearchState(
+    val isLoading: Boolean,
+    val recentViewedStations: List<Station>
+)
 
-    @Insert
-    fun insertStation(stationEntity: StationEntity)
-
-    @Update
-    fun updateStation(stationEntity: StationEntity)
-
-    @Delete
-    fun deleteStation(stationEntity: StationEntity)
-
-    @Query("SELECT * FROM station WHERE id = (:stationId) ORDER BY created_at DESC")
-    fun fetchStation(stationId: Int): Maybe<StationEntity>
-
-    @Query("SELECT * FROM station")
-    fun fetchAllStations(): Flowable<List<StationEntity>>
-}
+fun initialRecentSearchState() = RecentSearchState(false, emptyList())

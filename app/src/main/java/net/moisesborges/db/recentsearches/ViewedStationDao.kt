@@ -22,29 +22,20 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.search.adapter
+package net.moisesborges.db.recentsearches
 
-import androidx.recyclerview.widget.DiffUtil
-import net.moisesborges.ui.search.mvvm.SearchItem
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.reactivex.Maybe
 
-class SearchItemsDiffCallback(
-    private val newSearchItems: List<SearchItem>,
-    private val oldSearchItems: List<SearchItem>
-) : DiffUtil.Callback() {
+@Dao
+interface ViewedStationDao {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldSearchItems[oldItemPosition] == newSearchItems[newItemPosition]
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrUpdateViewedStation(viewedStationEntity: ViewedStationEntity)
 
-    override fun getOldListSize(): Int {
-        return oldSearchItems.size
-    }
-
-    override fun getNewListSize(): Int {
-        return newSearchItems.size
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldSearchItems[oldItemPosition] == newSearchItems[newItemPosition]
-    }
+    @Query("SELECT * FROM viewed_station ORDER BY modified_at DESC LiMIT :limit")
+    fun fetchLastViewedStations(limit: Int): Maybe<List<ViewedStationEntity>>
 }

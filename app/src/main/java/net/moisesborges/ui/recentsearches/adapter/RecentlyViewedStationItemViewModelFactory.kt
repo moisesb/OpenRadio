@@ -22,13 +22,19 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.recentsearches
+package net.moisesborges.ui.recentsearches.adapter
 
+import net.moisesborges.model.Station
 import net.moisesborges.ui.navigation.Navigator
+import net.moisesborges.ui.recentsearches.mvvm.RecentlyViewedStationItemViewModel
 
-class RecentSearchesViewModel(private val navigator: Navigator) {
+class RecentlyViewedStationItemViewModelFactory(
+    private val navigator: Navigator
+) {
 
-    fun selectSearch() {
-        navigator.navigateToSearch()
-    }
+    fun create(station: Station) =
+        RecentlyViewedStationItemViewModel(
+            station,
+            navigator
+        )
 }

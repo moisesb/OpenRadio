@@ -38,7 +38,7 @@ import net.moisesborges.databinding.FragmentHomeBinding
 import net.moisesborges.ui.home.mvvm.HomeViewModel
 import net.moisesborges.ui.base.LifecycleFragment
 import net.moisesborges.ui.home.mvvm.PaginationDetector
-import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
+import net.moisesborges.ui.home.adapter.StationItemViewModelFactory
 import net.moisesborges.ui.home.adapter.TopStationsAdapter
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
@@ -48,11 +48,11 @@ class HomeFragment : LifecycleFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by inject()
-    private val topStationItemViewModelFactory: TopStationItemViewModelFactory = get()
+    private val itemViewModelFactory: StationItemViewModelFactory = get()
     private val paginationDetector: PaginationDetector = get()
 
     private val adapter = TopStationsAdapter(
-        topStationItemViewModelFactory,
+        itemViewModelFactory,
         paginationDetector
     )
     private val stationsRecyclerView: RecyclerView by lazy { stations_recycler_view }

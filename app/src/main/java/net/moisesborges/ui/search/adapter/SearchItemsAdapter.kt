@@ -34,11 +34,11 @@ import net.moisesborges.R
 import net.moisesborges.databinding.EmptyResultsItemBinding
 import net.moisesborges.databinding.ProgressIndicatorItemBinding
 import net.moisesborges.databinding.SearchErrorItemBinding
-import net.moisesborges.databinding.TopStationItemBinding
+import net.moisesborges.databinding.StationSearchItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.search.mvvm.SearchItem
-import net.moisesborges.ui.home.adapter.TopStationItemViewModelFactory
+import net.moisesborges.utils.ContentDiffCallback
 
 private const val STATION_VIEW_TYPE = 0
 private const val PROGRESS_INDICATOR_VIEW_TYPE = 1
@@ -46,7 +46,7 @@ private const val EMPTY_RESULTS_VIEW_TYPE = 2
 private const val ERROR_VIEW_TYPE = 3
 
 class SearchItemsAdapter(
-    private val viewModelFactory: TopStationItemViewModelFactory
+    private val viewModelFactory: StationSearchItemViewModelFactory
 ) : RecyclerView.Adapter<SearchItemViewHolder>() {
 
     private var searchItems: List<SearchItem> = mutableListOf()
@@ -57,7 +57,7 @@ class SearchItemsAdapter(
         cancellableListUpdateCallback.cancel()
         this.oldSearchItems = this.searchItems
         this.searchItems = searchItems
-        val diffResult = DiffUtil.calculateDiff(SearchItemsDiffCallback(this.searchItems, this.oldSearchItems))
+        val diffResult = DiffUtil.calculateDiff(ContentDiffCallback(this.oldSearchItems, this.searchItems))
         cancellableListUpdateCallback = CancellableListUpdateCallback(this)
         diffResult.dispatchUpdatesTo(cancellableListUpdateCallback)
     }
@@ -75,7 +75,7 @@ class SearchItemsAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             STATION_VIEW_TYPE -> {
-                val binding: TopStationItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.top_station_item, parent, false)
+                val binding: StationSearchItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.station_search_item, parent, false)
                 SearchItemViewHolder.Station(binding, viewModelFactory)
             }
             PROGRESS_INDICATOR_VIEW_TYPE -> {
@@ -102,19 +102,15 @@ class SearchItemsAdapter(
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         val searchItem = searchItems[position]
-        when (holder) {
-            is SearchItemViewHolder.Station -> holder.bind(searchItem)
-            is SearchItemViewHolder.EmptyResults -> holder.bind(searchItem)
-            is SearchItemViewHolder.ErrorMessage -> holder.bind(searchItem)
-        }
+        holder.bind(searchItem)
     }
 }
 
 sealed class SearchItemViewHolder(binding: ViewDataBinding) : LifecycleViewHolder(binding) {
 
     class Station(
-        val binding: TopStationItemBinding,
-        private val viewModelFactory: TopStationItemViewModelFactory
+        val binding: StationSearchItemBinding,
+        private val viewModelFactory: StationSearchItemViewModelFactory
     ) : SearchItemViewHolder(binding) {
 
         override fun bind(searchItem: SearchItem) {

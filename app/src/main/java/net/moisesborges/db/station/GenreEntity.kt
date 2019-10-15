@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.db
+package net.moisesborges.db.station
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

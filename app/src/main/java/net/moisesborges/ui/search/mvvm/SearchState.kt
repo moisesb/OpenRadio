@@ -37,6 +37,5 @@ data class SearchState(
 fun initialSearchState() = SearchState(false, "", false, emptyList(), null)
 
 sealed class SearchError {
-    object NotFound : SearchError()
     data class RequestError(val message: String) : SearchError()
 }
