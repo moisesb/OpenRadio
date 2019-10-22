@@ -36,7 +36,6 @@ private const val APP_VERSION_KEY = "settings_app_version"
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val context = preferenceManager.context
         val screen = preferenceManager.createPreferenceScreen(context)
