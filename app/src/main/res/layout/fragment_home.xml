@@ -55,5 +55,17 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_settings_20px"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{() -> viewModel.settingsSelected()}"
+                android:layout_marginTop="@dimen/settings_button_margin_top"
+                android:layout_marginEnd="@dimen/settings_button_margin_end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -48,4 +48,9 @@
     <string name="audio_channel_description">Enable audio controls when app is in background</string>
     <string name="action_stop">Stop</string>
     <string name="action_play">Play</string>
+
+    <!-- SettingsActivity -->
+    <string name="about_category_title">About</string>
+    <string name="app_version_title">App Version</string>
+    <string name="settings_activity_title">Settings</string>
 </resources>

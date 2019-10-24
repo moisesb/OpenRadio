@@ -22,19 +22,26 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.home.di
+package net.moisesborges.ui.settings
 
-import net.moisesborges.ui.home.mvvm.PaginationDetector
-import net.moisesborges.ui.home.mvvm.PaginationLoader
-import net.moisesborges.ui.home.mvvm.PaginationManager
-import net.moisesborges.ui.home.adapter.StationItemViewModelFactory
-import net.moisesborges.ui.home.mvvm.HomeViewModel
-import org.koin.dsl.module.module
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import net.moisesborges.R
+import net.moisesborges.ui.base.LifecycleActivity
 
-val homeFragmentModule = module {
-    single { PaginationManager() }
-    single<PaginationLoader> { get<PaginationManager>() }
-    single<PaginationDetector> { get<PaginationManager>() }
-    single { HomeViewModel(get(), get(), get(), get()) }
-    factory { StationItemViewModelFactory(get(), get(), get()) }
+class SettingsActivity : LifecycleActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_settings)
+        supportActionBar?.setTitle(R.string.settings_activity_title)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.settings_container, SettingsFragment())
+            .commit()
+    }
+}
+
+fun createSettingsActivityIntent(context: Context): Intent {
+    return Intent(context, SettingsActivity::class.java)
 }

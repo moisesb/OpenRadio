@@ -32,10 +32,12 @@ import net.moisesborges.api.OpenRadioApi
 import net.moisesborges.extensions.get
 import net.moisesborges.extensions.plusAssign
 import net.moisesborges.model.Station
+import net.moisesborges.ui.navigation.Navigator
 import net.moisesborges.utils.RxSchedulers
 import timber.log.Timber
 
 class HomeViewModel(
+    private val navigator: Navigator,
     private val openRadioApi: OpenRadioApi,
     private val paginationLoader: PaginationLoader,
     private val rxSchedulers: RxSchedulers
@@ -56,6 +58,10 @@ class HomeViewModel(
 
     fun clear() {
         disposables.clear()
+    }
+
+    fun settingsSelected() {
+        navigator.navigateToSettings()
     }
 
     private fun loadTopRadios(pageNumber: Int) {

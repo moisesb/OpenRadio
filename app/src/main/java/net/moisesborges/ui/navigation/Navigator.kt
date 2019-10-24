@@ -30,6 +30,7 @@ import android.os.Build
 import android.transition.Fade
 import net.moisesborges.model.Station
 import net.moisesborges.ui.search.createSearchActivityIntent
+import net.moisesborges.ui.settings.createSettingsActivityIntent
 import net.moisesborges.ui.station.createStationActivityIntent
 
 class Navigator(
@@ -72,6 +73,12 @@ class Navigator(
         val currentActivity = activityProvider.activity
         if (currentActivity != null) {
             createIntentAndStart(currentActivity)
+        }
+    }
+
+    fun navigateToSettings() {
+        navigateToActivity { currentActivity ->
+            currentActivity.startActivity(createSettingsActivityIntent(currentActivity))
         }
     }
 }
