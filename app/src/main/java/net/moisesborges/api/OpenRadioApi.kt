@@ -30,7 +30,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-const val openRadioUrl = "http://openradio.moisesborges.dev/v1/"
+const val openRadioUrl = "https://openradio.moisesborges.dev/v1/"
 
 interface OpenRadioApi {
 
