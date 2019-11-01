@@ -22,28 +22,26 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.api
+package net.moisesborges.ui.stations
 
-import io.reactivex.Single
+import android.content.Context
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import net.moisesborges.R
 import net.moisesborges.model.Genre
-import net.moisesborges.model.Station
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
-const val openRadioUrl = "https://openradio.moisesborges.dev/v1/"
+private const val GENRE_NAME_ARG = "StationsActivity.genreName"
 
-interface OpenRadioApi {
+class StationsActivity : AppCompatActivity() {
 
-    @GET("stations")
-    fun getStations(): Single<List<Station>>
-
-    @GET("stations/{stationId}")
-    fun getStation(@Path("stationId") stationId: Int): Single<Station>
-
-    @GET("search")
-    fun searchStations(@Query("name") name: String): Single<List<Station>>
-
-    @GET("genres")
-    fun getGenres(): Single<List<Genre>>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_stations)
+    }
 }
+
+fun createStationsActivityByGenre(context: Context, genre: Genre): Intent =
+    Intent(context, StationsActivity::class.java).apply {
+        putExtra(GENRE_NAME_ARG, genre.name)
+    }

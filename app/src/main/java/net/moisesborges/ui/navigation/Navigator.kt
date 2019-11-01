@@ -28,14 +28,21 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.os.Build
 import android.transition.Fade
+import net.moisesborges.model.Genre
 import net.moisesborges.model.Station
 import net.moisesborges.ui.search.createSearchActivityIntent
 import net.moisesborges.ui.settings.createSettingsActivityIntent
 import net.moisesborges.ui.station.createStationActivityIntent
+import net.moisesborges.ui.stations.createStationsActivityByGenre
 
-class Navigator(
-    private val activityProvider: ActivityProvider
-) {
+class Navigator(private val activityProvider: ActivityProvider) {
+
+    private fun navigateToActivity(createIntentAndStart: (activity: Activity) -> Unit) {
+        val currentActivity = activityProvider.activity
+        if (currentActivity != null) {
+            createIntentAndStart(currentActivity)
+        }
+    }
 
     fun navigateBack() {
         activityProvider.activity?.finish()
@@ -69,16 +76,15 @@ class Navigator(
         }
     }
 
-    private fun navigateToActivity(createIntentAndStart: (activity: Activity) -> Unit) {
-        val currentActivity = activityProvider.activity
-        if (currentActivity != null) {
-            createIntentAndStart(currentActivity)
-        }
-    }
-
     fun navigateToSettings() {
         navigateToActivity { currentActivity ->
             currentActivity.startActivity(createSettingsActivityIntent(currentActivity))
+        }
+    }
+
+    fun navigateToAllStationsByGenre(genre: Genre) {
+        navigateToActivity { currentActivity ->
+            currentActivity.startActivity(createStationsActivityByGenre(currentActivity, genre))
         }
     }
 }

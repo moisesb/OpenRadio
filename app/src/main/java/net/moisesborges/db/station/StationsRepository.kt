@@ -75,7 +75,7 @@ class StationsRepository(private val stationDao: StationDao) {
             station.genres.map { genre ->
                 GenreEntity(
                     genre.id,
-                    genre.title
+                    genre.name
                 )
             },
             station.streamUrl.url,

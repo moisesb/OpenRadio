@@ -25,10 +25,13 @@
 package net.moisesborges.ui.recentsearches.mvvm
 
 import net.moisesborges.model.Station
+import net.moisesborges.model.Genre as GenreModel
 
 sealed class RecentSearchItem {
 
     data class Header(val title: String) : RecentSearchItem()
 
     data class RecentlyViewedStation(val station: Station) : RecentSearchItem()
+
+    data class Genre(val genre: GenreModel) : RecentSearchItem()
 }

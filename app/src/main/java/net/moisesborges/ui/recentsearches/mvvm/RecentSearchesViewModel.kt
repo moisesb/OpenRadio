@@ -27,16 +27,24 @@ package net.moisesborges.ui.recentsearches.mvvm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import io.reactivex.disposables.CompositeDisposable
+import net.moisesborges.api.OpenRadioApi
 import net.moisesborges.extensions.get
+import net.moisesborges.extensions.pairWith
+import net.moisesborges.extensions.plusAssign
 import net.moisesborges.features.recentsearches.RecentSearchReposity
 import net.moisesborges.ui.navigation.Navigator
 import net.moisesborges.utils.RxSchedulers
 
 class RecentSearchesViewModel(
-    private val recentSearchReposity: RecentSearchReposity,
+    private val recentSearchRepository: RecentSearchReposity,
+    private val openRadioApi: OpenRadioApi,
     private val rxSchedulers: RxSchedulers,
+    private val stringResolver: RecentSearchesStringResolver,
     private val navigator: Navigator
 ) {
+
+    private val disposables = CompositeDisposable()
 
     private val state: MutableLiveData<RecentSearchState> = MutableLiveData<RecentSearchState>().also {
         it.value = initialRecentSearchState()
@@ -49,10 +57,12 @@ class RecentSearchesViewModel(
         if (currentState.recentViewedStations.isNullOrEmpty()) {
             state.postValue(currentState.copy(isLoading = true))
         }
-        recentSearchReposity.recentSearches()
+
+        disposables += recentSearchRepository.recentSearches()
+            .pairWith(openRadioApi.getGenres())
             .subscribeOn(rxSchedulers.io())
-            .subscribe { recentViewedStations ->
-                state.postValue(state.get().copy(isLoading = false, recentViewedStations = recentViewedStations))
+            .subscribe { (recentViewedStations, genres) ->
+                state.postValue(state.get().copy(isLoading = false, recentViewedStations = recentViewedStations, genres = genres))
             }
     }
 
@@ -67,8 +77,14 @@ class RecentSearchesViewModel(
         val content = mutableListOf<RecentSearchItem>()
         val recentViewedStations = state.recentViewedStations
         if (recentViewedStations.isNotEmpty()) {
-            content += RecentSearchItem.Header("Recent Viewed")
+            content += RecentSearchItem.Header(stringResolver.recentSearchesHeader())
             content += recentViewedStations.map(RecentSearchItem::RecentlyViewedStation)
+        }
+
+        val genres = state.genres
+        if (genres.isNotEmpty()) {
+            content += RecentSearchItem.Header(stringResolver.genresHeader())
+            content += genres.map(RecentSearchItem::Genre)
         }
         return content
     }

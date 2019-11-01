@@ -33,6 +33,7 @@ import androidx.lifecycle.Observer
 import net.moisesborges.R
 import net.moisesborges.databinding.FragmentRecentSearchesBinding
 import net.moisesborges.ui.base.LifecycleFragment
+import net.moisesborges.ui.recentsearches.adapter.GenreItemViewModelFactory
 import net.moisesborges.ui.recentsearches.adapter.RecentSearchesAdapter
 import net.moisesborges.ui.recentsearches.adapter.RecentlyViewedStationItemViewModelFactory
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchesViewModel
@@ -42,9 +43,10 @@ class RecentSearchesFragment : LifecycleFragment() {
 
     private val viewModel: RecentSearchesViewModel by inject()
     private val recentlyViewedStationItemViewModelFactory: RecentlyViewedStationItemViewModelFactory by inject()
+    private val genreItemViewModelFactory: GenreItemViewModelFactory by inject()
 
     private lateinit var binding: FragmentRecentSearchesBinding
-    private val adapter = RecentSearchesAdapter(recentlyViewedStationItemViewModelFactory)
+    private val adapter = RecentSearchesAdapter(recentlyViewedStationItemViewModelFactory, genreItemViewModelFactory)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_searches, container, false)

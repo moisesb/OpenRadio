@@ -24,11 +24,13 @@
 
 package net.moisesborges.ui.recentsearches.mvvm
 
+import net.moisesborges.model.Genre
 import net.moisesborges.model.Station
 
 data class RecentSearchState(
     val isLoading: Boolean,
-    val recentViewedStations: List<Station>
+    val recentViewedStations: List<Station>,
+    val genres: List<Genre>
 )
 
-fun initialRecentSearchState() = RecentSearchState(false, emptyList())
+fun initialRecentSearchState() = RecentSearchState(false, emptyList(), emptyList())
