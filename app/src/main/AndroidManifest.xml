@@ -38,11 +38,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".ui.stations.StationsActivity"/>
 
-        <activity android:name=".ui.settings.SettingsActivity"
+        <activity
+                android:name=".ui.settings.SettingsActivity"
                 android:launchMode="singleTop"
                 android:parentActivityName=".ui.main.MainActivity"
-                android:theme="@style/AppTheme.ActionBar"/>
+                android:theme="@style/AppTheme.ActionBar" />
 
         <activity
                 android:name=".ui.search.SearchActivity"
@@ -68,7 +70,7 @@
 
         <activity
                 android:name=".ui.station.StationActivity"
-                android:launchMode="singleTop"/>
+                android:launchMode="singleTop" />
 
         <service android:name=".audioplayer.AudioPlayerService">
             <intent-filter>

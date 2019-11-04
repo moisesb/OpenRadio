@@ -22,28 +22,14 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.api
+package net.moisesborges.ui.recentsearches.mvvm
 
-import io.reactivex.Single
-import net.moisesborges.model.Genre
-import net.moisesborges.model.Station
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import android.content.Context
+import net.moisesborges.R
 
-const val openRadioUrl = "https://openradio.moisesborges.dev/v1/"
+class RecentSearchesStringResolver(private val context: Context) {
 
-interface OpenRadioApi {
+    fun recentSearchesHeader(): String = context.getString(R.string.recent_searches_header)
 
-    @GET("stations")
-    fun getStations(): Single<List<Station>>
-
-    @GET("stations/{stationId}")
-    fun getStation(@Path("stationId") stationId: Int): Single<Station>
-
-    @GET("search")
-    fun searchStations(@Query("name") name: String): Single<List<Station>>
-
-    @GET("genres")
-    fun getGenres(): Single<List<Genre>>
+    fun genresHeader(): String = context.getString(R.string.genres_header)
 }

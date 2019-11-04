@@ -24,11 +24,15 @@
 
 package net.moisesborges.ui.recentsearches.di
 
+import net.moisesborges.ui.recentsearches.adapter.GenreItemViewModelFactory
 import net.moisesborges.ui.recentsearches.adapter.RecentlyViewedStationItemViewModelFactory
+import net.moisesborges.ui.recentsearches.mvvm.RecentSearchesStringResolver
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchesViewModel
 import org.koin.dsl.module.module
 
 val recentSearchesModule = module {
-    single { RecentSearchesViewModel(get(), get(), get()) }
+    single { RecentSearchesViewModel(get(), get(), get(), get(), get()) }
+    factory { RecentSearchesStringResolver(get()) }
     factory { RecentlyViewedStationItemViewModelFactory(get()) }
+    factory { GenreItemViewModelFactory(get()) }
 }

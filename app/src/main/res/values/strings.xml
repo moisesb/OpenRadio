@@ -42,6 +42,8 @@
 
     <!-- RecentSearchesFragment -->
     <string name="search_field_hint">Stations</string>
+    <string name="recent_searches_header">Recent Searches</string>
+    <string name="genres_header">Genres</string>
 
     <!-- AudioPlayerNotificationManager -->
     <string name="audio_channel_name">Audio Player Controls</string>

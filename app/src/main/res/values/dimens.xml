@@ -63,4 +63,9 @@
     <dimen name="header_item_margin_top">16dp</dimen>
     <dimen name="header_item_margin_bottom">32dp</dimen>
     <dimen name="header_item_horizontal_margin">16dp</dimen>
+    
+    <!-- Genre Item -->
+    <dimen name="genre_item_margin_top">8dp</dimen>
+    <dimen name="genre_item_margin_bottom">8dp</dimen>
+    <dimen name="genre_item_horizontal_margin">16dp</dimen>
 </resources>

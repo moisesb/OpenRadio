@@ -31,6 +31,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
+import net.moisesborges.databinding.GenreItemBinding
 import net.moisesborges.databinding.HeaderItemBinding
 import net.moisesborges.databinding.RecentlyViewedStationItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
@@ -40,9 +41,11 @@ import net.moisesborges.utils.ContentDiffCallback
 
 private const val HEADER_VIEW_TYPE = 0
 private const val RECENT_VIEWED_STATION_VIEW_TYPE = 1
+private const val GENRE_VIEW_TYPE = 2
 
 class RecentSearchesAdapter(
-    private val viewModelFactory: RecentlyViewedStationItemViewModelFactory
+    private val stationViewModelFactory: RecentlyViewedStationItemViewModelFactory,
+    private val genreViewModelFactory: GenreItemViewModelFactory
 ) : RecyclerView.Adapter<RecentSearchesContentViewHolder>() {
 
     var content: List<RecentSearchItem> = mutableListOf()
@@ -72,7 +75,17 @@ class RecentSearchesAdapter(
                     parent,
                     false
                 )
-                RecentSearchesContentViewHolder.RecentlyViewedStation(binding, viewModelFactory)
+                RecentSearchesContentViewHolder.RecentlyViewedStation(binding, stationViewModelFactory)
+            }
+
+            GENRE_VIEW_TYPE -> {
+                val binding: GenreItemBinding = DataBindingUtil.inflate(
+                    layoutInflater,
+                    R.layout.genre_item,
+                    parent,
+                    false
+                )
+                RecentSearchesContentViewHolder.Genre(binding, genreViewModelFactory)
             }
 
             else -> throw UnsupportedOperationException("view holder for view type $viewType not implemented")
@@ -87,6 +100,7 @@ class RecentSearchesAdapter(
         return when (content[position]) {
             is RecentSearchItem.Header -> HEADER_VIEW_TYPE
             is RecentSearchItem.RecentlyViewedStation -> RECENT_VIEWED_STATION_VIEW_TYPE
+            is RecentSearchItem.Genre -> GENRE_VIEW_TYPE
         }
     }
 
@@ -101,25 +115,31 @@ sealed class RecentSearchesContentViewHolder(binding: ViewDataBinding) : Lifecyc
     abstract fun bind(item: RecentSearchItem)
 
     class Header(
-        val binding: HeaderItemBinding
+        private val binding: HeaderItemBinding
     ) : RecentSearchesContentViewHolder(binding) {
         override fun bind(item: RecentSearchItem) {
-            if (item !is RecentSearchItem.Header) {
-                return
-            }
+            require(item is RecentSearchItem.Header) { "item must be RecentSearchItem.Header" }
             binding.viewModel = item
         }
     }
 
     class RecentlyViewedStation(
-        val binding: RecentlyViewedStationItemBinding,
+        private val binding: RecentlyViewedStationItemBinding,
         private val viewModelFactory: RecentlyViewedStationItemViewModelFactory
     ) : RecentSearchesContentViewHolder(binding) {
         override fun bind(item: RecentSearchItem) {
-            if (item !is RecentSearchItem.RecentlyViewedStation) {
-                return
-            }
+            require(item is RecentSearchItem.RecentlyViewedStation) { "item must be RecentSearchItem.RecentlyViewedStation" }
             binding.viewModel = viewModelFactory.create(item.station)
+        }
+    }
+
+    class Genre(
+        val binding: GenreItemBinding,
+        private val viewModelFactory: GenreItemViewModelFactory
+    ) : RecentSearchesContentViewHolder(binding) {
+        override fun bind(item: RecentSearchItem) {
+            require(item is RecentSearchItem.Genre) { "item must be RecentSearchItem.Genre" }
+            binding.viewModel = viewModelFactory.create(item.genre)
         }
     }
 }
