@@ -29,12 +29,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.databinding.GenreItemBinding
 import net.moisesborges.databinding.HeaderItemBinding
 import net.moisesborges.databinding.RecentlyViewedStationItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
+import net.moisesborges.ui.base.LifecycleRecyclerViewAdapter
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.recentsearches.mvvm.RecentSearchItem
 import net.moisesborges.utils.ContentDiffCallback
@@ -46,7 +46,7 @@ private const val GENRE_VIEW_TYPE = 2
 class RecentSearchesAdapter(
     private val stationViewModelFactory: RecentlyViewedStationItemViewModelFactory,
     private val genreViewModelFactory: GenreItemViewModelFactory
-) : RecyclerView.Adapter<RecentSearchesContentViewHolder>() {
+) : LifecycleRecyclerViewAdapter<RecentSearchesContentViewHolder>() {
 
     var content: List<RecentSearchItem> = mutableListOf()
         set(newValue) {
