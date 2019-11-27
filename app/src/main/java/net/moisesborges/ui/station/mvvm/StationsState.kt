@@ -22,31 +22,13 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.api
+package net.moisesborges.ui.station.mvvm
 
-import io.reactivex.Single
-import net.moisesborges.model.Genre
 import net.moisesborges.model.Station
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
-const val openRadioUrl = "https://openradio.moisesborges.dev/v1/"
+data class StationsState(
+    val isLoading: Boolean,
+    val stations: List<Station>
+)
 
-interface OpenRadioApi {
-
-    @GET("stations")
-    fun getStations(): Single<List<Station>>
-
-    @GET("stations/{stationId}")
-    fun getStation(@Path("stationId") stationId: Int): Single<Station>
-
-    @GET("stations")
-    fun getStationsByGenre(@Query("genre") genreName: String): Single<List<Station>>
-
-    @GET("search")
-    fun searchStations(@Query("name") name: String): Single<List<Station>>
-
-    @GET("genres")
-    fun getGenres(): Single<List<Genre>>
-}
+fun initialStationsState() = StationsState(isLoading = false, stations = emptyList())

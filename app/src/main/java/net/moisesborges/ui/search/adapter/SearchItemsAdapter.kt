@@ -29,13 +29,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import net.moisesborges.R
 import net.moisesborges.databinding.EmptyResultsItemBinding
 import net.moisesborges.databinding.ProgressIndicatorItemBinding
 import net.moisesborges.databinding.SearchErrorItemBinding
 import net.moisesborges.databinding.StationSearchItemBinding
 import net.moisesborges.ui.base.CancellableListUpdateCallback
+import net.moisesborges.ui.base.LifecycleRecyclerViewAdapter
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.search.mvvm.SearchItem
 import net.moisesborges.utils.ContentDiffCallback
@@ -47,7 +47,7 @@ private const val ERROR_VIEW_TYPE = 3
 
 class SearchItemsAdapter(
     private val viewModelFactory: StationSearchItemViewModelFactory
-) : RecyclerView.Adapter<SearchItemViewHolder>() {
+) : LifecycleRecyclerViewAdapter<SearchItemViewHolder>() {
 
     private var searchItems: List<SearchItem> = mutableListOf()
     private var oldSearchItems: List<SearchItem> = mutableListOf()

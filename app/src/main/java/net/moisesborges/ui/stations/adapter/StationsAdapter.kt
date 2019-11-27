@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.moisesborges.ui.home.adapter
+package net.moisesborges.ui.stations.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,46 +34,42 @@ import net.moisesborges.model.Station
 import net.moisesborges.ui.base.LifecycleRecyclerViewAdapter
 import net.moisesborges.ui.base.LifecycleViewHolder
 import net.moisesborges.ui.base.StationsDiffCallback
-import net.moisesborges.ui.home.mvvm.PaginationDetector
+import net.moisesborges.ui.home.adapter.StationItemViewModelFactory
 
-class TopStationsAdapter(
-    private val itemViewModelFactory: StationItemViewModelFactory,
-    private val paginationDetector: PaginationDetector
-) : LifecycleRecyclerViewAdapter<StationViewHolder>() {
+class StationsAdapter(
+    private val viewModelFactory: StationItemViewModelFactory
+) : LifecycleRecyclerViewAdapter<StationsViewHolder>() {
 
-    private var stations = listOf<Station>()
-
-    fun setStations(stations: List<Station>) {
-        val oldStations = this.stations
-        this.stations = stations
-        val diffResult = DiffUtil.calculateDiff(StationsDiffCallback(oldStations, stations))
+    var stations: List<Station> = emptyList()
+    set(value) {
+        val oldStations = field
+        field = value
+        val diffResult = DiffUtil.calculateDiff(StationsDiffCallback(oldStations, value))
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<StationItemBinding>(inflater, R.layout.station_item,
-            parent, false)
-        return StationViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
         return stations.size
     }
 
-    override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StationsViewHolder, position: Int) {
         val station = stations[position]
-        holder.bind(itemViewModelFactory.create(station))
-        paginationDetector.onItemDisplayed(position, stations.size)
+        holder.bind(station)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationsViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding: StationItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.station_item, parent, false)
+        return StationsViewHolder(binding, viewModelFactory)
     }
 }
 
-class StationViewHolder(
-    private val binding: StationItemBinding
+class StationsViewHolder(
+    private val binding: StationItemBinding,
+    private val viewModelFactory: StationItemViewModelFactory
 ) : LifecycleViewHolder(binding) {
 
-    fun bind(viewModel: StationItemViewModel) {
-        binding.viewModel = viewModel
-        binding.executePendingBindings()
+    fun bind(station: Station) {
+        binding.viewModel = viewModelFactory.create(station)
     }
 }

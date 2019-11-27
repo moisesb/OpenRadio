@@ -38,7 +38,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.stations.StationsActivity"/>
+        <activity android:name=".ui.stations.StationsActivity"
+                android:launchMode="singleTop"
+                android:parentActivityName=".ui.main.MainActivity"/>
 
         <activity
                 android:name=".ui.settings.SettingsActivity"
@@ -70,6 +72,7 @@
 
         <activity
                 android:name=".ui.station.StationActivity"
+                android:parentActivityName=".ui.main.MainActivity"
                 android:launchMode="singleTop" />
 
         <service android:name=".audioplayer.AudioPlayerService">

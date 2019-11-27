@@ -35,6 +35,7 @@ import net.moisesborges.extensions.plusAssign
 import net.moisesborges.features.recentsearches.RecentSearchReposity
 import net.moisesborges.ui.navigation.Navigator
 import net.moisesborges.utils.RxSchedulers
+import timber.log.Timber
 
 class RecentSearchesViewModel(
     private val recentSearchRepository: RecentSearchReposity,
@@ -61,9 +62,12 @@ class RecentSearchesViewModel(
         disposables += recentSearchRepository.recentSearches()
             .pairWith(openRadioApi.getGenres())
             .subscribeOn(rxSchedulers.io())
-            .subscribe { (recentViewedStations, genres) ->
+            .subscribe({ (recentViewedStations, genres) ->
                 state.postValue(state.get().copy(isLoading = false, recentViewedStations = recentViewedStations, genres = genres))
-            }
+            }, { error ->
+                // TODO: handle it
+                Timber.e(error)
+            })
     }
 
     fun selectSearch() {
